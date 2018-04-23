@@ -1,3 +1,4 @@
+[Git-log]:(https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2)
 ###创建一个本地库
 	git init 
 
@@ -14,14 +15,18 @@
 
 ---
 ###查看日志
-	git log	//查看提交的历史记录
+	git log	//查看提交的历史记录, 按Q退出log
 	git log --preety=oneline	//精简显示信息
+	git log --preety=format: "%h -- %an, %ar: %s"	//显示简短hash -- 作者, 修订时间: 提交说明
+	
+>更多log参数 参照[Git-log]
 
 ---
 ###版本回退
 	git reset --hard HEAD^	//回退相当于HEAD指针指向某一个提交节点, ^代表上一个节点，^^代表上上个
 	git reset --hard HEAD~100	//回退到100个版本前
 	git reset --hard 3628164	//3628164是commit id, 如果知道某次提交的commit id, 可以直接reset
+	git reflog	//查看控制台关闭之前所有命令操作, 可以查看commit id
 
 
  
