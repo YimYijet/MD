@@ -12,8 +12,10 @@
 	git add .	//添加全部修改的文件到暂存区
 	git add FILE_PATH	//添加修改的FILE_PATH到暂存区
 	git reset HEAD FILE_PATH | . //从暂存区移除FILE_PATH | .
-	git rm FILE_PATH	//从当前branch移除FILE_PATH
+	git rm FILE_PATH	//从当前branch和暂存区移除FILE_PATH
+	git rm --cached FILE_PATH	//从当前branch和暂存区移除FILE_PATH, 但本地保留
 	git commit -m '提交说明'	//提交修改到当前branch
+	git commit --amend	//整合到上次提交
 
 ---
 ###查看日志
