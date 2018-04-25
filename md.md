@@ -61,10 +61,16 @@ _斜体_
 
 __粗体__
 
-[百度]:(https://www.baidu.com)
-[百度logo]:(https://www.baidu.com/img/baidu_jgylogo3.gif)
+[百度]:https://www.baidu.com
+[logo]:https://www.baidu.com/img/baidu_jgylogo3.gif
 
-[百度]![百度logo]
+[百度]
+<br/>
+![百度logo][logo]
+<br/>
+[baidu](https://www.baidu.com)
+<br/>
+![baidu logo](https://www.baidu.com/img/baidu_jgylogo3.gif)
 
 ``` json 文本
 ```
