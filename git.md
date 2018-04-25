@@ -1,6 +1,10 @@
 [Git-log]:https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2
 ### 创建一个本地库
 	git init 
+	git config --global user.name [USERNAME]	//将全局用户名设置为USERNAME
+	git config --global user.email [EMAIL_PATH]	//将全局用户邮箱设为EMAIL_PATH
+	git config user.name [USERNAME]	//将当前项目用户名设置为USERNAME
+	git config user.email [EMAIL_PATH]	//将当前项目用户名设置为EMAIL_PATH
 
 ---
 ### 查看版本修改
@@ -38,10 +42,13 @@
 
 ---
 ### 远端
-	ssh-keygen -t rsa -C '[EMAIL_PATH]'	//创建SSH key
+	ssh-keygen -t rsa -C '[EMAIL_PATH]'	//创建SSH key, 公共key在id_rsa.pub文件中, 添加到GIT库SSH keys中
 	git remote add [NAME] [URL]	//添加远程仓库URL本地命名为NAME
 	git remote -v	//查看添加的远程仓库
 	git remote rm [NAME]	//移除远程仓库NAME
 	git remote rename [NAME] [NEW NAME]	//重命名远程仓库
 	git remote show [NAME]	//查看远程仓库信息
+	git pull --rebase [NAME] [BRANCH]	//将远程库NAME的文件拉取的本地BRANCH分支上(在云端新建库时, 可能会出现readme.md文件,由于本地库不存在, 需要先拉取)
+	git push -u [NAME] [BRANCH]	//将当前分支BRANCH推送到远程库NAME, -u可以把本地BRANCH分支与远端BRANCH分支关联起来
+	
  
