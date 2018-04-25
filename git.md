@@ -32,5 +32,11 @@
 	git reset --hard 3628164	//3628164是commit id, 如果知道某次提交的commit id, 可以直接reset
 	git reflog	//查看所有命令操作, 可以用来查看commit id
 
+---
+###撤销修改
+	git checkout -- FILE_PATH	//从工作区撤销修改(原理就是恢复到最近版本库的数据), --必须有
+
+---
+###远端
 
  
