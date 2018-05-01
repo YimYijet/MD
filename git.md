@@ -1,6 +1,6 @@
 [Git-log]:https://git-scm.com/book/zh/v1/Git-%E5%9F%BA%E7%A1%80-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2
 ### 创建一个本地库
-	git init 
+	git init
 	git config --global user.name [USERNAME]	//将全局用户名设置为USERNAME
 	git config --global user.email [EMAIL_PATH]	//将全局用户邮箱设为EMAIL_PATH
 	git config user.name [USERNAME]	//将当前项目用户名设置为USERNAME
@@ -16,8 +16,8 @@
 	git add .	//添加全部修改的文件到暂存区
 	git add [FILE_PATH]	//添加修改的FILE_PATH到暂存区
 	git reset HEAD [FILE_PATH] | . //从暂存区移除FILE_PATH | .
-	git rm [FILE_PATH]	//从当前branch和暂存区移除FILE_PATH
-	git rm --cached [FILE_PATH]	//从当前branch和暂存区移除FILE_PATH, 但本地保留
+	git rm [FILE_PATH]	//从当前暂存区移除FILE_PATH
+	git rm --cached [FILE_PATH]	//从当前暂存区移除FILE_PATH, 但本地保留
 	git commit -m '提交说明'	//提交修改到当前branch
 	git commit --amend	//整合到上次提交
 
@@ -26,8 +26,8 @@
 	git log	//查看提交的历史记录, 按Q退出log
 	git log --preety=oneline	//精简显示信息
 	git log --preety=format: "%h -- %an, %ar: %s"	//显示简短hash -- 作者, 修订时间: 提交说明
-	
->更多log参数 参照[Git-log]
+
+>更多log参数 参照[Git-log][Git-log]
 
 ---
 ### 版本回退
@@ -48,7 +48,20 @@
 	git remote rm [NAME]	//移除远程仓库NAME
 	git remote rename [NAME] [NEW NAME]	//重命名远程仓库
 	git remote show [NAME]	//查看远程仓库信息
-	git pull --rebase [NAME] [BRANCH]	//将远程库NAME的文件拉取的本地BRANCH分支上(在云端新建库时, 可能会出现readme.md文件,由于本地库不存在, 需要先拉取)
+	git pull --rebase [NAME] [BRANCH]	//将远程库NAME的文件拉取的本地BRANCH分支上(在云端新建库时,
+		可能会出现readme.md文件,由于本地库不存在, 需要先拉取)
 	git push -u [NAME] [BRANCH]	//将当前分支BRANCH推送到远程库NAME, -u可以把本地BRANCH分支与远端BRANCH分支关联起来
-	
- 
+
+### 分支
+	git checkout -b [BRANCH]	//创建并切换到一个新的分支BRANCH, 相当于 git branch [BRANCH] git checkout [BRANCH]
+	git branch	//查看当前分支
+
+### 储藏
+	git stash	//存储当前变更
+	git stash list	//查看当前储藏
+	git stash apply	//应用最新的储藏
+	git stash@{[NUM]} apply	//应用当前NUM前的储藏
+	git stash apply --index	//应用储藏, 并更新暂存区
+	git stash drop stash@{NUM}	//移除储藏
+	git stash pop	//应用最新储藏并将其移除
+	git stash show -p stash@{NUM}	| git apply -R	//取消应用储藏NUM

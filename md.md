@@ -19,38 +19,38 @@
 > this is first part
 >> this is second part
 
-THIS IS TITLE
+h1
 =
-
-THIS IS TITLE TOO
+h2
 -
-
-# h1
-## h2
 ### h3
 #### h4
 ##### h5
 ###### h6
 
-- li
-- li
-- li
+-   li
+-   li
+-   li
 
 ---
-2. ol-1
-1. ol-2
-4. ol-3
-3. ol-4
-	 * li
-	 * li
-	 * li
+2.  ol-1
+1.  ol-2
+4.  ol-3
+3.  ol-4
 
 ---
-*	Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+*   li
+
+*   li
+
+*   li
+
+---
+*   Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
     Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
     viverra nec, fringilla in, laoreet vitae, risus.
-*   >Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
-    Suspendisse id sem consectetuer libero luctus adipiscing.
+*   > Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+    > Suspendisse id sem consectetuer libero luctus adipiscing.
 
 ---
 	function fn() {
@@ -61,10 +61,10 @@ _斜体_
 
 __粗体__
 
-[百度]:https://www.baidu.com
+[baidu]:https://www.baidu.com
 [logo]:https://www.baidu.com/img/baidu_jgylogo3.gif
 
-[百度]
+[百度][baidu]
 <br/>
 ![百度logo][logo]
 <br/>
@@ -72,7 +72,7 @@ __粗体__
 <br/>
 ![baidu logo](https://www.baidu.com/img/baidu_jgylogo3.gif)
 
-``` json 文本
-```
+``  json 文本
+``
 
 Use the `printf()` function.
