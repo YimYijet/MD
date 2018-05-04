@@ -52,10 +52,19 @@
 		可能会出现readme.md文件,由于本地库不存在, 需要先拉取)
 	git push -u [NAME] [BRANCH]	//将当前分支BRANCH推送到远程库NAME, -u可以把本地BRANCH分支与远端BRANCH分支关联起来
 
+---
 ### 分支
 	git checkout -b [BRANCH]	//创建并切换到一个新的分支BRANCH, 相当于 git branch [BRANCH] git checkout [BRANCH]
 	git branch	//查看当前分支
+	git checkout [BRANCH]	//切换到BRANCH分支
+	git merge [BRANCH]	//合并BRANCH到当前分支
+	git branch -d [BRANCH]	//删除BRANCH分支
+	git merge --no-ff -m '[DESC]' [BRANCH]	//关闭fast forward模式合并分支, --no-ff指令关闭了ff, -m合并时提交描述DESC
+	git branch -D [BRANCH]	//未合并的分支BRANCH无法用-d删除, -D可以强制删除
+	git checkout -b [BRANCH] origin/[BRANCH]	//在本地建立与远端向对应的分支BRANCH
+	git branch --set-upstream [BRANCH] origin/[BRANCH]	//建立本地分支与远端的关联
 
+---
 ### 储藏
 	git stash	//存储当前变更
 	git stash list	//查看当前储藏
@@ -64,4 +73,22 @@
 	git stash apply --index	//应用储藏, 并更新暂存区
 	git stash drop stash@{NUM}	//移除储藏
 	git stash pop	//应用最新储藏并将其移除
-	git stash show -p stash@{NUM}	| git apply -R	//取消应用储藏NUM
+	git stash show -p stash@{NUM} | git apply -R	//取消应用储藏NUM
+
+---
+### 标签
+	git tag [NAME]	//对最新的提交打标签NAME
+	git tag [NAME] [COMMIT_ID]	//对提交COMMIT_ID打标签NAME
+	git tag	//查看标签
+	git show [NAME]	//查看NAME标签信息
+	git tag -a [NAME] -m '[DESC]' [COMMIT_ID]	//-a指定标签名, -m指定说明文字
+	git tag -s [NAME] -m '[DESC]' [COMMIT_ID]	//用PGP私钥签名一个标签, 如果没有找到GnuPG, 或没有GPG密钥对, 会报错
+	git tag -d [NAME]	//删除一个标签
+	git push origin [NAME]	//向远端推送一个标签
+	git push origin --tags	//向远端推送所有本地定义标签
+	git push origin :refs/tags/[NAME]	//删除远端标签, 必须先删除本地标签
+
+---
+### _.gitignore_
+	git add -f [FILE_PATH]	//会强制添加
+	git check-ignore -v [FILE_PATH]	//查看那条规则对FILE_PATH约束
