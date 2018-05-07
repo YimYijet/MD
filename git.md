@@ -10,6 +10,7 @@
 ### 查看版本修改
 	git status	//可以查看修改了那些文件
 	git diff [FILE_PATH]	//具体查看FILE_PATH修改内容
+	git diff -staged	//查看工作区与暂存区的修改
 
 ---
 ### 提交代码
@@ -20,6 +21,7 @@
 	git rm --cached [FILE_PATH]	//从当前暂存区移除FILE_PATH, 但本地保留
 	git commit -m '提交说明'	//提交修改到当前branch
 	git commit --amend	//整合到上次提交
+	git rebase -i [START_POINT] [END_POINT]	//弹出交互界面让用户编辑在START_POINT到END_POINT范围内的合并操作
 
 ---
 ### 查看日志
