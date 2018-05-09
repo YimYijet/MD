@@ -58,13 +58,14 @@
 ### 分支
 	git checkout -b [BRANCH]	//创建并切换到一个新的分支BRANCH, 相当于 git branch [BRANCH] git checkout [BRANCH]
 	git branch	//查看当前分支
+	git branch -a	//查看远端分支
 	git checkout [BRANCH]	//切换到BRANCH分支
 	git merge [BRANCH]	//合并BRANCH到当前分支
 	git branch -d [BRANCH]	//删除BRANCH分支
 	git merge --no-ff -m '[DESC]' [BRANCH]	//关闭fast forward模式合并分支, --no-ff指令关闭了ff, -m合并时提交描述DESC
 	git branch -D [BRANCH]	//未合并的分支BRANCH无法用-d删除, -D可以强制删除
 	git checkout -b [BRANCH] origin/[BRANCH]	//在本地建立与远端向对应的分支BRANCH
-	git branch --set-upstream [BRANCH] origin/[BRANCH]	//建立本地分支与远端的关联
+	git branch --track [BRANCH] origin/[BRANCH]	//建立本地分支与远端的关联
 
 ---
 ### 储藏
