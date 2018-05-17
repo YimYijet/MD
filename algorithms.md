@@ -1,5 +1,16 @@
 > *   __*交换运算切勿使用*__ `[arr[i], arr[j]] = [arr[j], arr[i]]` __*会消耗大量时间去运算*__
 > *   __*整数转换时，使用*__ `Math.floor` __*比之*__ `Number.parseInt` __*要快很多*__
+	
+	const arr = [] // 生成随机整数 
+    function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min
+    }
+    // 生成len长度的随机数组
+    function generateArr(len) {
+        for (var i = 0; i < len; i++) {
+            arr.push(random(1, len))
+        }
+    }
 
 ---
 ### 快速排序
