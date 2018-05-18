@@ -95,7 +95,9 @@
 ---
 ### 归并排序
 > *   时间复杂度O(nlogn), 稳定
-> *   归并分为两种实现, 递归和非递归, 递归实现在数据非常大的时候, 容易栈溢出, 无法递归
+> *   归并排序速度介于快排和堆排序之间, 对于中数量级数据有较优的表现( 递归实现 )
+> *   归并分为两种实现, 递归和非递归, 递归实现在数据非常大的时候, 容易栈溢出, 无法递归, 
+>     但在可承受范围内中量数据是速度快于非递归甚至快排
 	 
 	/** 
      * 递归实现归并排序
@@ -135,9 +137,10 @@
     }
 
 	/** 
-     * 非递归实现归并排序, 先将
+     * 非递归实现归并排序, 将数组按照1, 2, 4, ..., 2^n个元素的顺序依次分割, 自底向上进行比较合并
      */        
     function mergeSort(arr) {
+		// 
         let i, leftMin, leftMax, rightMin, rightMax, next, temp = [], length = arr.length
         for (i = 1; i < length; i *= 2) {
             for (leftMin = 0; leftMin < length - i; leftMin = rightMax) {
@@ -160,6 +163,10 @@
         }
     }
 	
+---
+
+### 冒泡排序
+
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
 [归并非递归](https://www.cnblogs.com/bluestorm/archive/2012/09/06/2673138.html)
