@@ -95,9 +95,8 @@
 ---
 ### 归并排序
 > *   时间复杂度O(nlogn), 稳定
-> *   归并排序速度介于快排和堆排序之间, 对于中数量级数据有较优的表现( 递归实现 )
-> *   归并分为两种实现, 递归和非递归, 递归实现在数据非常大的时候, 容易栈溢出, 无法递归, 
->     但在可承受范围内中量数据是速度快于非递归甚至快排
+> *   归并排序速度介于快排和堆排序之间, 对于中数量级数据有较优的表现( 非递归实现 )
+> *   归并分为两种实现, 递归和非递归, 递归实现在数据非常大的时候, 容易栈溢出, 无法递归
 	 
 	/** 
      * 递归实现归并排序
@@ -166,6 +165,33 @@
 ---
 
 ### 冒泡排序
+> *   时间复杂度O(n)~O(n^2), 平均O(n^2), 稳定
+> *   只适合少量数据比较
+
+	function bubbleSort(arr, left = 0, right = arr.length - 1) {
+        let temp
+        while (left < right) {
+            for(let i = left; i < right; i++) {
+                if (arr[i] > arr[i + 1]) {
+                    temp = arr[i]
+                    arr[i] = arr[i + 1]
+                    arr[i + 1] = temp
+                }
+            }
+            right --
+            if (left >= right) {
+                break
+            }
+            for (let i = right; i > left; i--) {
+                if (arr[i] < arr[i - 1]) {
+                    temp = arr[i]
+                    arr[i] = arr[i - 1]
+                    arr[i - 1] = temp
+                }
+            }
+            left ++
+        }
+    }
 
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
