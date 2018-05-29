@@ -196,13 +196,29 @@
 ---
 
 ### 希尔排序
-> * 
+> * 时间复杂度O(nlogn)~O(n^2), 改进型的插入排序
+
+	function shellSort(arr) {
+        for (let gap = arr.length/2; gap > 0; gap /= 2) {
+            for (let i = gap; i < arr.length; i++) {
+                let j = i, temp = arr[j]
+                if (arr[j] < arr[j - gap]) {
+                    while (j - gap >= 0 && temp < arr[j - gap]) {
+                        arr[j] = arr[j - gap]
+                        j -= gap
+                    }
+                    arr[j] = temp
+                }
+            }
+        }
+    }
 
 ---
+
 ### 二叉树的遍历
 > * 数组模拟二叉树, 父节点 _index_, 左子节点 _2 * index + 1_, 右子节点 _2 * index + 2_
 
-###### 前序遍历
+#### 前序遍历
 > * 根节点 ---> 左子树 ---> 右子树
 	
 	function preOrderTraversal(arr, result = [], root = 0) {
@@ -231,7 +247,7 @@
         return result
     }
 
-###### 中序遍历
+#### 中序遍历
 > * 左子树 ---> 根节点 ---> 右子树
 
 	function inOrderTraversal(arr, result = [], root = 0) {
@@ -261,7 +277,7 @@
             return result
         }
 
-###### 后序遍历
+#### 后序遍历
 > * 左子树 ---> 右子树 ---> 根节点
 
 	function postOrderTraversal(arr, result = [], root = 0) {
@@ -298,7 +314,7 @@
         return result
     }
 
-###### 任意两种遍历还原二叉树
+#### 任意两种遍历还原二叉树
 > * 
 
 ---
