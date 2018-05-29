@@ -139,24 +139,24 @@
      * 非递归实现归并排序, 将数组按照1, 2, 4, ..., 2^n个元素的顺序依次分割, 自底向上进行比较合并
      */        
     function mergeSort(arr) {
-		// 
+		// leftMin~leftMax 划分了左侧待比较区域, right同理, next标志temp数组的下标移动
         let i, leftMin, leftMax, rightMin, rightMax, next, temp = [], length = arr.length
-        for (i = 1; i < length; i *= 2) {
-            for (leftMin = 0; leftMin < length - i; leftMin = rightMax) {
-                rightMin = leftMax = leftMin + i
+        for (i = 1; i < length; i *= 2) {	// 以2^n划分比较区域
+            for (leftMin = 0; leftMin < length - i; leftMin = rightMax) {	// 通过leftMin = rightMax, 将比较区域后移
+                rightMin = leftMax = leftMin + i	// 初始化左右比较区域的标志Max, 和下标移动Min
                 rightMax = leftMax + i
-                if (rightMax > length) {
+                if (rightMax > length) {		// 数组长度不足处理
                     rightMax = length
                 }
                 next = 0
                 while (leftMin < leftMax && rightMin < rightMax) {
                     temp[next++] = arr[leftMin] > arr[rightMin] ? arr[rightMin++] : arr[leftMin++]
                 }
-                while (leftMin < leftMax) {
-                    arr[--rightMin] = arr[--leftMax]
+                while (leftMin < leftMax) {		// 左侧比较区域只会比右侧大, 处理右侧数据不足时, 无法比较
+                    arr[--rightMin] = arr[--leftMax]	// 将多出的部分存入arr  
                 }
                 while (next > 0) {
-                    arr[--rightMin] = temp[--next]
+                    arr[--rightMin] = temp[--next]		// next记录了比较的部分, 将其从右(rightMax - (leftMax - leftMin))向左(leftMin)存入arr
                 }
             }
         }
@@ -192,6 +192,114 @@
             left ++
         }
     }
+
+---
+
+### 希尔排序
+> * 
+
+---
+### 二叉树的遍历
+> * 数组模拟二叉树, 父节点 _index_, 左子节点 _2 * index + 1_, 右子节点 _2 * index + 2_
+
+###### 前序遍历
+> * 根节点 ---> 左子树 ---> 右子树
+	
+	function preOrderTraversal(arr, result = [], root = 0) {
+        let left = 2 * root + 1, right = 2 * root + 2
+        result.push(arr[root])
+        if (left < arr.length) {
+            preOrderTraversal(arr, result, left)
+        }
+        if (right < arr.length) {
+            preOrderTraversal(arr, result, right)
+        }
+    }
+	
+	// 非递归
+	function preOrderTraversal(arr) {
+        let result = [], index = 0, stack = []
+        while (stack.length != 0 || !!arr[index]) {
+            if (index < arr.length) {
+                result.push(arr[index])
+                stack.push(index)
+                index = 2 * index + 1 
+            } else {
+                index = 2 * stack.pop() + 2
+            }
+        } 
+        return result
+    }
+
+###### 中序遍历
+> * 左子树 ---> 根节点 ---> 右子树
+
+	function inOrderTraversal(arr, result = [], root = 0) {
+        let left = 2 * root + 1, right = 2 * root + 2
+        if (left < arr.length) {
+            inOrderTraversal(arr, result, left)
+        }
+        result.push(arr[root])
+        if (right < arr.length) {
+            inOrderTraversal(arr, result, right)
+        } 
+    }
+	
+	// 非递归
+	function inOrderTraversal(arr) {
+            let result = [], index = 0, stack = []
+            while (stack.length != 0 || !!arr[index]) {
+                if (index < arr.length) {
+                    stack.push(index)
+                    index = 2 * index + 1 
+                } else {
+                    index = stack.pop()
+                    result.push(arr[index])
+                    index = 2 * index + 2
+                }
+            } 
+            return result
+        }
+
+###### 后序遍历
+> * 左子树 ---> 右子树 ---> 根节点
+
+	function postOrderTraversal(arr, result = [], root = 0) {
+	    let left = 2 * root + 1, right = 2 * root + 2
+	    if (left < arr.length) {
+	        postOrderTraversal(arr, result, left)
+	    }
+	    if (right < arr.length) {
+	        postOrderTraversal(arr, result, right)
+	    } 
+	    result.push(arr[root])
+	}	
+	
+	// 非递归
+	function preOrderTraversal(arr) {
+        let result = [], index = 0, stack = [], flag = []
+        while (stack.length != 0 || !!arr[index]) {
+            if (index < arr.length && !flag[index]) {
+                stack.push(index)
+                index = 2 * index + 1 
+            } else  {
+                index = stack.pop()
+                if (!flag[index]) {		// 当前节点第一次出栈, 需遍历右子树, 重新将父节点压栈
+                    flag[index] = true	// 设置当前节点状态, 表示已遍历左子树
+                    stack.push(index)
+                    index = 2 * index + 2
+                } else {		// 当前节点第二次出栈, 左右子树遍历完, 输出
+                    result.push(arr[index])
+                    index = stack.pop()
+                    flag[index] = false		// 重置当前节点的父节点状态, 因为其出栈并非栈顶出栈
+                }
+            }
+        } 
+        return result
+    }
+
+###### 任意两种遍历还原二叉树
+> * 
 
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
