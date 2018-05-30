@@ -196,30 +196,47 @@
 ---
 
 ### 希尔排序
-> * 时间复杂度O(nlogn)~O(n^2), 改进型的插入排序
+#### 插入排序
+> *   时间复杂度O(n^2), 稳定
+
+	function insertSort(arr) {
+        for (let i = 1; i < arr.length; i ++) {
+            let tmp = arr[i], j = i - 1
+            while (j >= 0 && tmp < arr[j]) {
+                arr[j + 1] = arr[j]
+                j --
+            }
+            arr[j + 1] = tmp
+        }
+    }
+
+#### 希尔排序
+> *   时间复杂度O(n)~O(n^（3/2）), 改进型的插入排序
+> *   希尔排序的效率与增量有关, 较优的增量为n/3+1, n/9+1, n/27+1 ... 1
 
 	function shellSort(arr) {
-        for (let gap = arr.length/2; gap > 0; gap /= 2) {
-            for (let i = gap; i < arr.length; i++) {
-                let j = i, temp = arr[j]
-                if (arr[j] < arr[j - gap]) {
-                    while (j - gap >= 0 && temp < arr[j - gap]) {
-                        arr[j] = arr[j - gap]
-                        j -= gap
-                    }
-                    arr[j] = temp
+        let incr = 1, gap
+        do {
+            incr *= 3
+            gap = Math.floor(arr.length / incr) + 1
+            for (let i = gap; i < arr.length; i ++) {
+                let tmp = arr[i], j = i - gap
+                while (j >= 0 && tmp < arr[j]) {
+                    arr[j + gap] = arr[j]
+                    j -= gap
                 }
+                arr[j + gap] = tmp
             }
-        }
+        } while (gap > 1)
     }
 
 ---
 
 ### 二叉树的遍历
-> * 数组模拟二叉树, 父节点 _index_, 左子节点 _2 * index + 1_, 右子节点 _2 * index + 2_
+> *   数组模拟二叉树, 父节点 `index`, 左子节点 `2 * index + 1`, 右子节点 `2 * index + 2`
 
 #### 前序遍历
-> * 根节点 ---> 左子树 ---> 右子树
+> *   根节点 ---> 左子树 ---> 右子树
 	
 	function preOrderTraversal(arr, result = [], root = 0) {
         let left = 2 * root + 1, right = 2 * root + 2
@@ -248,7 +265,7 @@
     }
 
 #### 中序遍历
-> * 左子树 ---> 根节点 ---> 右子树
+> *   左子树 ---> 根节点 ---> 右子树
 
 	function inOrderTraversal(arr, result = [], root = 0) {
         let left = 2 * root + 1, right = 2 * root + 2
@@ -278,7 +295,7 @@
         }
 
 #### 后序遍历
-> * 左子树 ---> 右子树 ---> 根节点
+> *   左子树 ---> 右子树 ---> 根节点
 
 	function postOrderTraversal(arr, result = [], root = 0) {
 	    let left = 2 * root + 1, right = 2 * root + 2
@@ -315,8 +332,37 @@
     }
 
 #### 任意两种遍历还原二叉树
-> * 
+> *   
+##### 前序遍历, 中序遍历 
+> *   
+ 
+	function recoverBinaryTree(preOrder, inOrder) {
+        let tmp = [], index = 0, node = null
+        while (inOrder.length != 0 || preOrder.length != 0) {
+            if (!node) {
+                node = inOrder.shift()
+            }
+            if (tmp.indexOf(node) != -1) {
+                index = tmp.indexOf(node)
+                node = null
+            } else {
+                if (!tmp[index]) {
+                    tmp[index] = preOrder.shift()
+                }
+                if (!tmp[2 * index + 1]) {
+                    index = 2 * index + 1
+                } else {
+                    index = 2 * index + 2
+                }
+            }
+        }
+        return tmp
+    } 
 
+##### 前序遍历, 后序遍历
+> *   
+
+		
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
 [归并非递归](https://www.cnblogs.com/bluestorm/archive/2012/09/06/2673138.html)
