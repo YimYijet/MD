@@ -233,7 +233,8 @@
 ---
 
 ### 二叉树的遍历
-> *   数组模拟二叉树, 父节点 `index`, 左子节点 `2 * index + 1`, 右子节点 `2 * index + 2`
+> *   数组模拟二叉树, 父节点 `index`, 左子节点 `2 * index + 1`, 右子节点 `2 * index + 2`, 只适合完全二叉树遍历
+> *   
 
 #### 前序遍历
 > *   根节点 ---> 左子树 ---> 右子树
@@ -331,38 +332,83 @@
         return result
     }
 
+#### 层级遍历
+> *   
+
 #### 任意两种遍历还原二叉树
-> *   
+> *   二叉树还原必须知道中序遍历, 中序遍历用来控制左右子节点位置
+
 ##### 前序遍历, 中序遍历 
-> *   
+> *   可还原任意二叉树, 空节点数组中亦为空
  
 	function recoverBinaryTree(preOrder, inOrder) {
-        let tmp = [], index = 0, node = null
-        while (inOrder.length != 0 || preOrder.length != 0) {
-            if (!node) {
-                node = inOrder.shift()
+        let tmp = [], index = 0, node = null, float = 0
+        do {
+            node = preOrder.shift()
+            tmp[index] = node
+            float = inOrder.indexOf(node)
+            if (float == 0) {
+                while (tmp.indexOf(inOrder[0]) != -1) {
+                    index = tmp.indexOf(inOrder.shift())
+                }
             }
-            if (tmp.indexOf(node) != -1) {
-                index = tmp.indexOf(node)
-                node = null
+            if (inOrder.indexOf(preOrder[0]) < float) {
+                index = 2 * index + 1
             } else {
+                index = 2 * index + 2
+            }
+        } while (inOrder.length != 0 || preOrder.length != 0)
+        return tmp
+    }
+
+##### 前序遍历, 后序遍历
+> *   只能还原完全二叉树, 前序 + 后序只能确定父子层级关系无法确定位置
+
+	function recoverBinaryTree(preOrder, postOrder) {
+        let tmp = [], index = 0, node = postNode = null
+        while (preOrder.length != 0 || postOrder.length != 0) {
+            postNode = postOrder[0]
+            if (tmp.indexOf(postNode) == -1) {
+                node = preOrder.shift()
                 if (!tmp[index]) {
-                    tmp[index] = preOrder.shift()
+                    tmp[index] = node
                 }
                 if (!tmp[2 * index + 1]) {
                     index = 2 * index + 1
                 } else {
                     index = 2 * index + 2
                 }
+            } else {
+                postOrder.shift()
+                index = tmp.indexOf(postNode) + 1
             }
         }
         return tmp
     } 
 
-##### 前序遍历, 后序遍历
-> *   
+##### 中序遍历, 后序遍历	
+> *  可还原任意二叉树, 空节点数组中亦为空
+	
+	function recoverBinaryTree(inOrder, postOrder) {
+        let tmp = [], index = 0, node = null, float = 0
+        do {
+            node = postOrder.pop()
+            tmp[index] = node
+            float = inOrder.indexOf(node)
+            if (float == inOrder.length - 1) {
+                while (tmp.indexOf(inOrder[inOrder.length - 1]) != -1) {
+                    index = tmp.indexOf(inOrder.pop())
+                }
+            }
+            if (inOrder.indexOf(postOrder[postOrder.length - 1]) < float) {
+                index = 2 * index + 1
+            } else {
+                index = 2 * index + 2
+            }
+        } while (inOrder.length != 0 || postOrder.length != 0)
+        return tmp
+    }	
 
-		
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
 [归并非递归](https://www.cnblogs.com/bluestorm/archive/2012/09/06/2673138.html)
