@@ -1,5 +1,5 @@
 > *   __*交换运算切勿使用*__ `[arr[i], arr[j]] = [arr[j], arr[i]]` __*会消耗大量时间去运算*__
-> *   __*整数转换时，使用*__ `Math.floor` __*比之*__ `Number.parseInt` __*要快很多*__
+> *   __*整数转换时，使用*__ `Math.floor` __*比之*__ `Number.parseInt` __*要快很多， 如果能使用位运算 `>> <<` 更快*__
 > *   __*数组替换，使用*__ `Array.prototype.splice` __*比*__ `for` __*循环快*__
 	
     function random(min, max) {
@@ -79,7 +79,7 @@
      */
     function heapSort(arr) {
         // 初始化堆, originIndex为最后一个父节点
-        const originIndex = Math.floor((arr.length - 1) / 2)
+        const originIndex = (arr.length - 1) >> 1
         for (let i = originIndex; i >= 0; i--) {
             mutateHeap(arr, arr.length, i)
         }
@@ -102,7 +102,7 @@
      * 递归实现归并排序
      */        
     function mergeSort(arr, left = 0, right = arr.length - 1, temp = []) {
-        let middle = Math.floor((right + left) / 2 )
+        let middle = (right + left) >> 1
         if (left < right) {
             if (left < middle) {
                 mergeSort(arr, left, middle, temp);
@@ -232,16 +232,22 @@
 
 ---
 
+### 线性查找算法(BFPRT)
+> *   查找第k大(小)个元素, 时间复杂度O(n)
+
+---
+
 ### 二叉树的遍历
-> *   数组模拟二叉树, 父节点 `index`, 左子节点 `2 * index + 1`, 右子节点 `2 * index + 2`, 只适合完全二叉树遍历
-> *   
+> *   数组模拟二叉树, 父节点 `index`, 左子节点 `2 * index + 1`, 右子节点 `2 * index + 2`  
 
 #### 前序遍历
 > *   根节点 ---> 左子树 ---> 右子树
 	
 	function preOrderTraversal(arr, result = [], root = 0) {
         let left = 2 * root + 1, right = 2 * root + 2
-        result.push(arr[root])
+		if (arr[root]) {
+            result.push(arr[root])
+        }
         if (left < arr.length) {
             preOrderTraversal(arr, result, left)
         }
@@ -255,7 +261,9 @@
         let result = [], index = 0, stack = []
         while (stack.length != 0 || !!arr[index]) {
             if (index < arr.length) {
-                result.push(arr[index])
+                if (arr[index]) {
+                    result.push(arr[index])
+                }
                 stack.push(index)
                 index = 2 * index + 1 
             } else {
@@ -273,7 +281,9 @@
         if (left < arr.length) {
             inOrderTraversal(arr, result, left)
         }
-        result.push(arr[root])
+        if (arr[root]) {
+            result.push(arr[root])
+        }
         if (right < arr.length) {
             inOrderTraversal(arr, result, right)
         } 
@@ -288,7 +298,9 @@
                     index = 2 * index + 1 
                 } else {
                     index = stack.pop()
-                    result.push(arr[index])
+					if (arr[index]) {
+                    	result.push(arr[index])
+					}
                     index = 2 * index + 2
                 }
             } 
@@ -306,11 +318,13 @@
 	    if (right < arr.length) {
 	        postOrderTraversal(arr, result, right)
 	    } 
-	    result.push(arr[root])
+	    if (arr[root]) {
+            result.push(arr[root])
+        }
 	}	
 	
 	// 非递归
-	function preOrderTraversal(arr) {
+	function postOrderTraversal(arr) {
         let result = [], index = 0, stack = [], flag = []
         while (stack.length != 0 || !!arr[index]) {
             if (index < arr.length && !flag[index]) {
@@ -323,7 +337,9 @@
                     stack.push(index)
                     index = 2 * index + 2
                 } else {		// 当前节点第二次出栈, 左右子树遍历完, 输出
-                    result.push(arr[index])
+					if (arr[index]) {
+                    	result.push(arr[index])
+					}
                     index = stack.pop()
                     flag[index] = false		// 重置当前节点的父节点状态, 因为其出栈并非栈顶出栈
                 }
@@ -333,7 +349,50 @@
     }
 
 #### 层级遍历
-> *   
+> *   广度优先遍历
+
+	function levelTraversal(arr) {
+        let result = [], incer = 1, level = 0
+        while (incer < arr.length) {
+            for (let i = 0; i < incer; i++) {
+                if (arr[incer - 1 + i]) {
+                    result.push(arr[incer - 1 + i])
+                }
+            }
+            level++
+            incer *= 2
+        }
+        return result
+    }
+	
+	// 减少遍历次数, 适合遍历非完全二叉树
+	function levelTraversal(arr) {
+        let result = [], stack = [], index = 0, left, right
+        while (index <= (arr.length - 1) >> 1)) {
+            if (stack.length == 0) {
+                if (arr[index]) {
+                    result.push(arr[index])
+                }
+                stack.push(index)
+            } else {
+                let tmp = stack
+                stack = []
+                while (tmp.length != 0) {
+                    index = tmp.shift()
+                    left = 2 * index + 1, right = 2 * index + 2
+                    if (arr[left]) {
+                        result.push(arr[left])
+                        stack.push(left)
+                    }
+                    if (arr[right]) {
+                        result.push(arr[right])
+                        stack.push(right)
+                    }
+                }
+            }
+        }
+        return result
+    }
 
 #### 任意两种遍历还原二叉树
 > *   二叉树还原必须知道中序遍历, 中序遍历用来控制左右子节点位置
