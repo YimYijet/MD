@@ -233,7 +233,55 @@
 ---
 
 ### 线性查找算法(BFPRT)
-> *   查找第k大(小)个元素, 时间复杂度O(n)
+> *   查找第k小(大)个元素, 时间复杂度O(n)
+> *   
+> 
+	
+	function select(arr, k, left = 0, right = arr.length - 1) {
+	    if (right - left < 5) {
+	        insertSort(arr, left, right) 
+	        return arr[left + k - 1]
+	    }
+	    let median = left - 1, tmp
+		// 每五个元素为一组，找到每组中位数并交换至数组前列
+	    for (let i = left; i + 4 <= right; i += 5) {
+	        insertSort(arr, i, i + 4)
+	        tmp = arr[++median]
+	        arr[median] = arr[i + 2] 
+	        arr[i + 2] = tmp
+	    }
+		// 找到所有中位数位于中间的下标
+	    let pivotIndex = (left + median) >> 1
+		// 中位数排序，调整位置
+	    select(arr, pivotIndex - left + 1, left, median)
+	    let midIndex = partition(arr, left, right, pivotIndex)
+	    let index = midIndex - left + 1
+	    if (k == index) {
+	        return arr[midIndex]
+	    } else if (k < index) {
+	        return select(arr, k, left, midIndex - 1)
+	    } else {
+	        return select(arr, k - index, midIndex + 1, right)
+	    }
+	}	
+	
+	function partition(arr, left, right, pivotIndex){
+		let temp, index = left - 1
+		temp = arr[left]
+		arr[left] = arr[pivotIndex]
+		arr[pivotIndex] = temp
+	    for (let i = left; i < right; i++) {
+	        if (arr[i] < arr[right]) {
+	            temp = arr[i]
+	            arr[i] = arr[++index]
+	            arr[index] = temp
+	        }
+	    }
+	    temp = arr[++index]
+	    arr[index] = arr[right]
+	    arr[right] = temp
+	    return index
+	}
 
 ---
 
