@@ -3,23 +3,23 @@ Arch Windows10 双系统安装日志
 
 ### 分区
 	// 分区大小	硬盘大小： 1TB
-	/esp 	512M	// EFI 引导分区
-	/msr 	128M	// 自动分配
-	C:	 	60G		// Windows 系统盘
-	/恢复 	786M	// Windows 自动分配 系统恢复分区
-	/	 	10G		// Linux 根目录
-	swap 	8G		// Linux 交换分区
-	/boot	300M	// Linux 引导分区
-	/usr	20G		// Linux 用户应用安装
-	/home	20G		// Linux 用户主页
-	/var	15G		// Linux 可变数据
-	D:		200G	// Windows Linux共享工作区
-	E:		600G	// Windows happy区
-		
+	/esp 	512M	FAT16	// EFI 引导分区
+	/msr 	128M	MSR		// Windows 保留分区
+	C:	 	60G		NTFS	// Windows 系统盘
+	/oem 	786M	NTFS	// Windows 自动分配 系统恢复分区
+	/	 	10G		BTRFS	// Linux 根目录
+	swap 	8G		SWAP	// Linux 交换分区
+	/boot	300M	EXT2	// Linux 引导分区
+	/usr	20G		BTRFS	// Linux 用户应用安装
+	/home	20G		BTRFS	// Linux 用户主页
+	/var	15G		BTRFS	// Linux 可变数据
+	D:		200G	NTFS	// Windows Linux共享工作区
+	E:		600G	NTFS	// Windows happy区		
+
 ### 安装
-> 1.   winPE 进入系统，划分esp分区，512M。划分msr分区，作为windows保留分区
-> 2.   安装Windows10 系统，windows自动化分oem分区
-> 3.   引导进入Arch linux安装
+> 1.  winPE 进入系统，划分esp分区，512M。划分msr分区，作为windows保留分区
+> 2.  安装Windows10 系统，windows自动化分oem分区
+> 3.  引导进入Arch linux安装
 
 ---
 	# lsblk -l // 显示硬盘及分区
@@ -46,8 +46,8 @@ Arch Windows10 双系统安装日志
 	# mkfs.btrfs -f /dev/sda10
 
 	# mount /dev/sda7 /mnt	// 挂载root分区到/mnt
-	# cd /mnt	
-	# mkdir -v boot usr home var 
+	# cd /mnt
+	# mkdir -v boot usr home var
 	# ls
 	# mount /dev/sda5 /mnt/boot
 	# mount /dev/sda8 /mnt/var
@@ -55,7 +55,7 @@ Arch Windows10 双系统安装日志
 	# mount /dev/sda10 /mnt/home
 	# mkdir -v /mnt/boot/efi	// 创建efi目录用来挂载esp分区
 	# mount /dev/sda1 /mnt/boot/efi
-	
+
 	# nano /etc/pacman.d/mirrorlist	// 打开pacman镜像列表，将China源放在最上面，可以不改，但改了以后下载会快
 	# wifi-menu	// 链接wifi
 	# ping www.baidu.com	// 测试网络是否连通
@@ -78,9 +78,3 @@ Arch Windows10 双系统安装日志
 
 	# pacman -S dialog wpa_supplicant // 安装联网
 	# pacman -S grub efibootmgr os-prober
-							
-	
-
-	
-			
-

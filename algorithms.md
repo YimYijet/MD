@@ -1,7 +1,7 @@
 > *   __*交换运算切勿使用*__ `[arr[i], arr[j]] = [arr[j], arr[i]]` __*会消耗大量时间去运算*__
 > *   __*整数转换时，使用*__ `Math.floor` __*比之*__ `Number.parseInt` __*要快很多， 如果能使用位运算 `>> <<` 更快*__
 > *   __*数组替换，使用*__ `Array.prototype.splice` __*比*__ `for` __*循环快*__
-	
+
     function random(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min
     }
@@ -97,8 +97,8 @@
 > *   时间复杂度O(nlogn), 稳定
 > *   归并排序速度介于快排和堆排序之间, 对于中数量级数据有较优的表现( 非递归实现 )
 > *   归并分为两种实现, 递归和非递归, 递归实现在数据非常大的时候, 容易栈溢出, 无法递归
-	 
-	/** 
+
+	/**
      * 递归实现归并排序
      */        
     function mergeSort(arr, left = 0, right = arr.length - 1, temp = []) {
@@ -115,7 +115,7 @@
     }
 
     function merge(arr, left, right, middle, temp) {
-        let i = left, j = middle + 1, k = 0; 
+        let i = left, j = middle + 1, k = 0;
         // 左右两个数组比较存入temp
         while (i <= middle && j <= right) {
             if (arr[i] < arr[j]) {
@@ -135,7 +135,7 @@
         arr.splice(left, k, ...temp)
     }
 
-	/** 
+	/**
      * 非递归实现归并排序, 将数组按照1, 2, 4, ..., 2^n个元素的顺序依次分割, 自底向上进行比较合并
      */        
     function mergeSort(arr) {
@@ -161,7 +161,7 @@
             }
         }
     }
-	
+
 ---
 
 ### 冒泡排序
@@ -235,11 +235,11 @@
 ### 线性查找算法(BFPRT)
 > *   查找第k小(大)个元素, 时间复杂度O(n)
 > *   
-> 
-	
+>
+
 	function select(arr, k, left = 0, right = arr.length - 1) {
 	    if (right - left < 5) {
-	        insertSort(arr, left, right) 
+	        insertSort(arr, left, right)
 	        return arr[left + k - 1]
 	    }
 	    let median = left - 1, tmp
@@ -247,7 +247,7 @@
 	    for (let i = left; i + 4 <= right; i += 5) {
 	        insertSort(arr, i, i + 4)
 	        tmp = arr[++median]
-	        arr[median] = arr[i + 2] 
+	        arr[median] = arr[i + 2]
 	        arr[i + 2] = tmp
 	    }
 		// 找到所有中位数位于中间的下标
@@ -263,8 +263,8 @@
 	    } else {
 	        return select(arr, k - index, midIndex + 1, right)
 	    }
-	}	
-	
+	}
+
 	function partition(arr, left, right, pivotIndex){
 		let temp, index = left - 1
 		temp = arr[left]
@@ -290,7 +290,7 @@
 
 #### 前序遍历
 > *   根节点 ---> 左子树 ---> 右子树
-	
+
 	function preOrderTraversal(arr, result = [], root = 0) {
         let left = 2 * root + 1, right = 2 * root + 2
 		if (arr[root]) {
@@ -303,7 +303,7 @@
             preOrderTraversal(arr, result, right)
         }
     }
-	
+
 	// 非递归
 	function preOrderTraversal(arr) {
         let result = [], index = 0, stack = []
@@ -313,11 +313,11 @@
                     result.push(arr[index])
                 }
                 stack.push(index)
-                index = 2 * index + 1 
+                index = 2 * index + 1
             } else {
                 index = 2 * stack.pop() + 2
             }
-        } 
+        }
         return result
     }
 
@@ -334,16 +334,16 @@
         }
         if (right < arr.length) {
             inOrderTraversal(arr, result, right)
-        } 
+        }
     }
-	
+
 	// 非递归
 	function inOrderTraversal(arr) {
             let result = [], index = 0, stack = []
             while (stack.length != 0 || !!arr[index]) {
                 if (index < arr.length) {
                     stack.push(index)
-                    index = 2 * index + 1 
+                    index = 2 * index + 1
                 } else {
                     index = stack.pop()
 					if (arr[index]) {
@@ -351,7 +351,7 @@
 					}
                     index = 2 * index + 2
                 }
-            } 
+            }
             return result
         }
 
@@ -365,19 +365,19 @@
 	    }
 	    if (right < arr.length) {
 	        postOrderTraversal(arr, result, right)
-	    } 
+	    }
 	    if (arr[root]) {
             result.push(arr[root])
         }
-	}	
-	
+	}
+
 	// 非递归
 	function postOrderTraversal(arr) {
         let result = [], index = 0, stack = [], flag = []
         while (stack.length != 0 || !!arr[index]) {
             if (index < arr.length && !flag[index]) {
                 stack.push(index)
-                index = 2 * index + 1 
+                index = 2 * index + 1
             } else  {
                 index = stack.pop()
                 if (!flag[index]) {		// 当前节点第一次出栈, 需遍历右子树, 重新将父节点压栈
@@ -392,7 +392,7 @@
                     flag[index] = false		// 重置当前节点的父节点状态, 因为其出栈并非栈顶出栈
                 }
             }
-        } 
+        }
         return result
     }
 
@@ -412,7 +412,7 @@
         }
         return result
     }
-	
+
 	// 减少遍历次数, 适合遍历非完全二叉树
 	function levelTraversal(arr) {
         let result = [], stack = [], index = 0, left, right
@@ -445,9 +445,9 @@
 #### 任意两种遍历还原二叉树
 > *   二叉树还原必须知道中序遍历, 中序遍历用来控制左右子节点位置
 
-##### 前序遍历, 中序遍历 
+##### 前序遍历, 中序遍历
 > *   可还原任意二叉树, 空节点数组中亦为空
- 
+
 	function recoverBinaryTree(preOrder, inOrder) {
         let tmp = [], index = 0, node = null, float = 0
         do {
@@ -491,11 +491,11 @@
             }
         }
         return tmp
-    } 
+    }
 
-##### 中序遍历, 后序遍历	
-> *  可还原任意二叉树, 空节点数组中亦为空
-	
+##### 中序遍历, 后序遍历
+> *   可还原任意二叉树, 空节点数组中亦为空
+
 	function recoverBinaryTree(inOrder, postOrder) {
         let tmp = [], index = 0, node = null, float = 0
         do {
@@ -514,7 +514,7 @@
             }
         } while (inOrder.length != 0 || postOrder.length != 0)
         return tmp
-    }	
+    }
 
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
