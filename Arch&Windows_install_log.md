@@ -16,7 +16,7 @@ Arch Windows10 双系统安装日志
 	D:		200G	// Windows Linux共享工作区
 	E:		600G	// Windows happy区
 		
-### 安装
+### 系统安装及配置
 > 1.   winPE 进入系统，划分esp分区，512M。划分msr分区，作为windows保留分区
 > 2.   安装Windows10 系统，windows自动化分oem分区
 > 3.   引导进入Arch linux安装
@@ -70,6 +70,9 @@ Arch Windows10 双系统安装日志
 	# timedatectl status	// 查看系统时间，主要看RTC时间
 	# ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime	// 设置时区
 	# hwclock --systohc
+	# passwd //直接回车设置root密码
+	# useradd -m -g users -G GROUPNAME -s /bin/bash USERNAME // 添加用户设置组名，用户名
+	# passwd USERNAME	// 为用户设置密码
 	# nano /etc/mkinitcpio.conf	// /usr分区是独立分区，修改配置文件重启后才能进入系统
 	>    把 MODULES=() 改为 MODULES=(ahci btrfs)    // 开启ACHI模式，优化问题，可以不改
 	>    在 HOOKS 结尾添加 usr shutdown   
@@ -77,7 +80,77 @@ Arch Windows10 双系统安装日志
 	# pacman -S btrfs-progs	// 安装btrfs 文件系统环境，安装完成后会重新生成img文件
 
 	# pacman -S dialog wpa_supplicant // 安装联网
-	# pacman -S grub efibootmgr os-prober
+	# pacman -S xf86-input-synaptics	// 触摸板驱动
+	# pacman -S xf86-video-intel	// intel显卡驱动，不按默认为vesa驱动
+	# pacman -S grub efibootmgr os-prober	// grub引导
+	# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub	// grub使用UEFI，挂载esp分区，设置引导id为grub
+	# grub-mkconfig -o /boot/grub/grub.cfg	// 生成grub引导文件
+	# pacman -S xorg	// 安装图形驱动
+	# pacman -S plasma	// 安装KDE的plasma桌面
+	# pacman -S sddm	// 安装显示管理器，用于启动桌面
+	# systemctl enable sddm	// 开机自启动服务
+	# pacman -S networkmanager	// 安装图形网络管理器
+	# systemctl enable NetworkManager.service	// 开机启动网络管理
+	# pacman -S tlp tlp-rdw	// 安装tlp电源管理器
+	# systemctl enable tlp.service
+	# systemctl enable tlp-sleep.service
+
+	# exit	// 退出chroot
+	# reboot	// 重启电脑
+
+> 4.   重启默认引导为Windows，进入winPE，通过引导修改工具禁用Windows Boot Manager
+
+---
+### 应用安装及配置
+> *   Ctrl + Alt + F2进入新的tty
+	
+	# root // 管理员进入，输入密码
+	# pacman -Qs sudo // 如果安装了base-devel元件组，可以看到sudo
+	# pacman -S sudo // 没有sudo就安装一个
+	# nano /etc/sudoers
+	>    root ALL=(ALL) ALL
+	>    USERNAME ALL=(ALL) NOPASSWD: ALL   // 给普通用户su权限，并且不需要密码验证
+	#  pacman -S konsole	// 安装终端工具，KDE应用
+
+> *   Ctrl + Alt + F1切换到图形界面
+> *   Alt + Space唤出搜索，输入konsole
+	
+	# sudo pacman -S atom	// github官方编辑器，一个字 好使！
+	# sudo atom /etc/pacman.conf	// 修改pacman配置文件
+	>    [archlinuxcn]
+	>    Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+	>    [core]
+	>    Server = https://mirrors.ustc.edu.cn/archlinux/core/os/$arch
+	>    [extra]
+	>    Server = https://mirrors.ustc.edu.cn/archlinux/extra/os/$arch
+	>    [community]
+	>    Server = https://mirrors.ustc.edu.cn/archlinux/community/os/$arch
+	# sudo pacman -S haveget	// 随机数生成器，用于生成熵，减少pacman秘钥初始化时间
+	# sudo systemctl start haveged.service	
+	# sudo pacman-key --init	// 初始化pacman秘钥
+	# sudo pacman-key --populate archlinux	// 验证主密钥
+	# sudo pacman-key --refresh-keys	// 更新开发者秘钥
+	# sudo pacman -S archlinuxcn-keyring	// 安装archlinuxcn GPG key
+	# sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
+	# sudo atom ~/.xinit	// 配置.xinit
+	>    export GTK_IM_MODULE=fcitx
+	>    export QT_IM_MODULE=fcitx
+	>    export XMODIFIERS="@im=fcitx"
+	# sudo pacman -S fcitx-sogoupinyin
+	# sudo pacman -S wqy-microhei	// 安装文泉驿微米黑字体
+	# sudo pacman -S chromium	// chromuim浏览器
+	# sudo pacman -S dolphin	// dolphin文件管理器
+	# sudo pacman -S rar unrar ark	// 压缩及解压缩工具
+	# sudo pacman -S wget	// 安装wget
+	# sudo pacman -S vlc	// vlc播放器
+	# sudo pacman -S Gwenview	// 图片查看
+	# sudo pacman -S netease-cloud-music	// 网易云音乐
+	# sudo pacman -S gimp	// 图像处理
+
+---
+### GRUB设置
+> * 
+	
 							
 	
 
