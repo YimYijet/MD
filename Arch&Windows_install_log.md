@@ -4,7 +4,7 @@
 ### 分区
 	// 分区大小	硬盘大小： 1TB
 	/esp 	512M	FAT16	// EFI 引导分区
-	/msr 	128M	MSR		// Windows 保留分区
+	/msr 	128M	MSR	// Windows 保留分区
 	C:	60G	NTFS	// Windows 系统盘
 	/oem 	786M	NTFS	// Windows 自动分配 系统恢复分区
 	/	10G	BTRFS	// Linux 根目录
@@ -130,7 +130,7 @@
 	# sudo pacman-key --init	// 初始化pacman秘钥
 	# sudo pacman-key --populate archlinux	// 验证主密钥
 	# sudo pacman-key --refresh-keys	// 更新开发者秘钥
-	# sudo pacman -S archlinuxcn-keyring	// 安装archlinuxcn GPG key
+	# sudo pacman -Sy archlinuxcn-keyring	// 安装archlinuxcn GPG key
 
 	# sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
 	# sudo atom ~/.xinit	// 配置.xinit
@@ -154,15 +154,15 @@
 
 	# sudo atom /boot/grub/grub.cfg	// 打开grub配置文件添加
 	>    if [ "${grub_platform}" == "efi" ]; then
-	>		menuentry "Windows 10" {
-	>			insmod part_gpt
-	>			insmod fat
-	>			insmod search_fs_uuid
-	>			insmod chain
-	>			search --fs-uuid --set=root $hints_string $fs_uuid
-	>			chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-	>		}
-	>	fi
+	>        menuentry "Windows 10" {
+	>            insmod part_gpt
+	>            insmod fat
+	>            insmod search_fs_uuid
+	>            insmod chain
+	>            search --fs-uuid --set=root $hints_string $fs_uuid
+	>            chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+	>        }
+	>    fi
 	# sudo grub-probe --target=fs_uuid /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi		// 获取 $uuid替换上面的的$fs_uuid
 	# sudo grub-probe --target=hints_string /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi	// 获取 $hints_string替换
 
@@ -223,4 +223,6 @@
 	>        *)
 	>    esac
 
-	
+---
+### 主题及美化
+> *   
