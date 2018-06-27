@@ -1,20 +1,20 @@
-Arch Windows10 双系统安装日志
+ Arch Windows10 双系统安装日志
 ---
 
 ### 分区
 	// 分区大小	硬盘大小： 1TB
 	/esp 	512M	FAT16	// EFI 引导分区
 	/msr 	128M	MSR		// Windows 保留分区
-	C:	 	60G		NTFS	// Windows 系统盘
+	C:	60G	NTFS	// Windows 系统盘
 	/oem 	786M	NTFS	// Windows 自动分配 系统恢复分区
-	/	 	10G		BTRFS	// Linux 根目录
-	swap 	8G		SWAP	// Linux 交换分区
+	/	10G	BTRFS	// Linux 根目录
+	swap 	8G	SWAP	// Linux 交换分区
 	/boot	300M	EXT2	// Linux 引导分区
-	/usr	20G		BTRFS	// Linux 用户应用安装
-	/home	20G		BTRFS	// Linux 用户主页
-	/var	15G		BTRFS	// Linux 可变数据
-	D:		200G	NTFS	// Windows Linux共享工作区
-	E:		600G	NTFS	// Windows happy区
+	/usr	20G	BTRFS	// Linux 用户应用安装
+	/home	20G	BTRFS	// Linux 用户主页
+	/var	15G	BTRFS	// Linux 可变数据
+	D:	200G	NTFS	// Windows Linux共享工作区
+	E:	600G	NTFS	// Windows happy区
 
 ---
 ### 系统安装及配置
@@ -22,7 +22,6 @@ Arch Windows10 双系统安装日志
 > 2.  安装Windows10 系统，windows自动化分oem分区
 > 3.  引导进入Arch linux安装
 
----
 	# lsblk -l // 显示硬盘及分区
 
 	# parted	// 进入parted分区
@@ -82,7 +81,7 @@ Arch Windows10 双系统安装日志
 
 	# pacman -S dialog wpa_supplicant // 安装联网
 	# pacman -S xf86-input-synaptics	// 触摸板驱动
-	# pacman -S xf86-video-intel	// intel显卡驱动，不按默认为vesa驱动
+	# pacman -S xf86-video-intel	// intel显卡驱动，默认安装了vesa驱动
 	# pacman -S grub efibootmgr os-prober	// grub引导
 	# grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub	// grub使用UEFI，挂载esp分区，设置引导id为grub
 	# grub-mkconfig -o /boot/grub/grub.cfg	// 生成grub引导文件
@@ -132,6 +131,7 @@ Arch Windows10 双系统安装日志
 	# sudo pacman-key --populate archlinux	// 验证主密钥
 	# sudo pacman-key --refresh-keys	// 更新开发者秘钥
 	# sudo pacman -S archlinuxcn-keyring	// 安装archlinuxcn GPG key
+
 	# sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
 	# sudo atom ~/.xinit	// 配置.xinit
 	>    export GTK_IM_MODULE=fcitx
@@ -144,10 +144,83 @@ Arch Windows10 双系统安装日志
 	# sudo pacman -S rar unrar ark	// 压缩及解压缩工具
 	# sudo pacman -S wget	// 安装wget
 	# sudo pacman -S vlc	// vlc播放器
-	# sudo pacman -S Gwenview	// 图片查看
+	# sudo pacman -S gwenview	// 图片查看
 	# sudo pacman -S netease-cloud-music	// 网易云音乐
 	# sudo pacman -S gimp	// 图像处理
 
 ---
 ### GRUB设置
-> *
+> *   由于禁用了Windows Boot Manager，无法进入Windows，需要向grub添加Windows引导选项
+
+	# sudo atom /boot/grub/grub.cfg	// 打开grub配置文件添加
+	>    if [ "${grub_platform}" == "efi" ]; then
+	>		menuentry "Windows 10" {
+	>			insmod part_gpt
+	>			insmod fat
+	>			insmod search_fs_uuid
+	>			insmod chain
+	>			search --fs-uuid --set=root $hints_string $fs_uuid
+	>			chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+	>		}
+	>	fi
+	# sudo grub-probe --target=fs_uuid /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi		// 获取 $uuid替换上面的的$fs_uuid
+	# sudo grub-probe --target=hints_string /boot/efi/EFI/Microsoft/Boot/bootmgfw.efi	// 获取 $hints_string替换
+
+> *   Windows引导已修复，然后是grub美化
+> *   安装 [grub主题](https://www.gnome-look.org/browse/cat/109/ord/latest/) ，选个中意的主题 [poly light](https://www.gnome-look.org/p/1176413/) 下载后解压到/boot/efi/EFI/grub/themes/下（保证主题文件夹在esp分区内，否则文件内容无法加载）
+
+	# sudo atom /etc/default/grub
+	>    GRUB_THEME="/boot/efi/EFI/grub/themes/poly-light-master/theme.txt"
+	>    GRUB_GFXMODE="1920x1080x32"    // 分辨率自己调试
+	# sudo grub-mkconfig -o /boot/grub/grub.cfg	// 更新配置文件
+
+	# sudo pacman -S grub-customizer	// 安装grub图形配置工具
+
+> *   进入grub customizer调整引导菜单，保存
+	
+---
+### NTFS自动挂载
+> *   进入Windows将剩下硬盘空间划分为NTFS分区（D:，E:）
+> *   进入Arch，将D:盘自动挂载到/home/workspace
+	
+	# sudo pacman -S ntfs-3g	// 安装ntfs文件系统
+	# sudo mount -w /dev/sda11 /home/workspace
+	# sudo atom /etc/fstab	// 修改分区，文件系统配置文件
+	>    /dev/sda11    /home/workspace    ntfs-3g    rw,users,noatime    0 0
+
+---
+### Windows Linux时间同步
+> *   时间存储方式分为两类，一类为世界同一时间加时区（UTC，GMT），一类为本地时间LocalTime，linux系统使用UTC，Windows系统使用LT，因此会出现切换系统时，时间时大时小
+> 1.  Windows修改为UTC时间，关闭Windows时间同步
+> 2.  管理员权限打开命令行
+
+	> reg add "HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /d 1 /t REG_DWORD /f
+
+> 3.  进入Arch
+
+	# sudo timedatectl set-local-rtc false	// 设置硬件时钟显示方式为UTC
+	# sudo timedatectl status	
+
+---
+### 显卡配置
+> *   禁用nvidia独显
+
+	# sudo pacman -S bbswitch
+	# sudo atom /etc/modules-load.d/bbswitch.conf	// 每次启动加载bbswitch模块
+	>    bbswitch
+	# sudo atom /etc/modprobe.d/bbswitch.conf	// bbswitch加载参数，默认关闭	
+	>    options bbswitch load_state=0
+	# sudo atom /etc/modprobe.d/nouveau_blacklist.conf	// 关闭组织显卡关闭的占用模块
+	>    blacklist nouveau
+	>    blacklist nvidiafb
+	# sudo atom /usr/lib/systemd/system-shutdown/nvidia_card_enable.sh	// 每次重启都启用显卡，防止windows找不到显卡设备
+	>    #!/bin/bash
+	>    case "$1" in
+	>        reboot)
+	>            echo "Enabling NVIDIA GPU"
+	>            echo ON > /proc/acpi/bbswitch
+	>        ;;
+	>        *)
+	>    esac
+
+	
