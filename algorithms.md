@@ -234,8 +234,6 @@
 
 ### 线性查找算法(BFPRT)
 > *   查找第k小(大)个元素, 时间复杂度O(n)
-> *   
->
 
 	function select(arr, k, left = 0, right = arr.length - 1) {
 	    if (right - left < 5) {
@@ -254,6 +252,7 @@
 	    let pivotIndex = (left + median) >> 1
 		// 中位数排序，调整位置
 	    select(arr, pivotIndex - left + 1, left, median)
+		// 根据中位数的中位数将数组分为小于这个数的部分和大于它的部分，并返回这个数
 	    let midIndex = partition(arr, left, right, pivotIndex)
 	    let index = midIndex - left + 1
 	    if (k == index) {
