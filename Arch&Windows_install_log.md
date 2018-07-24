@@ -71,8 +71,8 @@ Arch Windows10 双系统安装日志
 	# ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime	// 设置时区
 	# hwclock --systohc
 	# passwd //直接回车设置root密码
-	# useradd -m -g users -G GROUPNAME -s /bin/bash USERNAME // 添加用户设置组名，用户名
-	# passwd USERNAME	// 为用户设置密码
+	# useradd -m -g users -G $groupname -s /bin/bash $username // 添加用户设置组名，用户名
+	# passwd $username	// 为用户设置密码
 	# nano /etc/mkinitcpio.conf	// /usr分区是独立分区，修改配置文件重启后才能进入系统
 	>    把 MODULES=() 改为 MODULES=(ahci btrfs)    // 开启ACHI模式，优化问题，可以不改
 	>    在 HOOKS 结尾添加 usr shutdown   
@@ -109,8 +109,8 @@ Arch Windows10 双系统安装日志
 	# pacman -S sudo // 没有sudo就安装一个
 	# nano /etc/sudoers
 	>    root ALL=(ALL) ALL
-	>    USERNAME ALL=(ALL) NOPASSWD: ALL   // 给普通用户su权限，并且不需要密码验证
-	#  pacman -S konsole	// 安装终端工具，KDE应用
+	>    $username ALL=(ALL) NOPASSWD: ALL   // 给普通用户su权限，并且不需要密码验证
+	# pacman -S konsole	// 安装终端工具，KDE应用
 
 > *   Ctrl + Alt + F1切换到图形界面
 > *   Alt + Space唤出搜索，输入konsole
@@ -222,6 +222,7 @@ Arch Windows10 双系统安装日志
 	>        ;;
 	>        *)
 	>    esac
+	# sudo chmod +x /usr/lib/systemd/system-shutdown/nvidia_card_enable.sh	// 添加执行权限
 
  ---
 ### 主题及美化
