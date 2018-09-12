@@ -1,5 +1,5 @@
- Arch Windows10 双系统安装日志
----
+Arch Windows10 双系统安装日志
+ ---
 
 ### 分区
 	// 分区大小	硬盘大小： 1TB
@@ -16,7 +16,7 @@
 	D:	200G	NTFS	// Windows Linux共享工作区
 	E:	600G	NTFS	// Windows happy区
 
----
+ ---
 ### 系统安装及配置
 > 1.  winPE 进入系统，划分esp分区，512M。划分msr分区，作为windows保留分区
 > 2.  安装Windows10 系统，windows自动化分oem分区
@@ -100,7 +100,7 @@
 
 > 4.  重启默认引导为Windows，进入winPE，通过引导修改工具禁用Windows Boot Manager
 
----
+ ---
 ### 应用安装及配置
 > *   Ctrl + Alt + F2进入新的tty
 
@@ -148,7 +148,7 @@
 	# sudo pacman -S netease-cloud-music	// 网易云音乐
 	# sudo pacman -S gimp	// 图像处理
 
----
+ ---
 ### GRUB设置
 > *   由于禁用了Windows Boot Manager，无法进入Windows，需要向grub添加Windows引导选项
 
@@ -177,18 +177,18 @@
 	# sudo pacman -S grub-customizer	// 安装grub图形配置工具
 
 > *   进入grub customizer调整引导菜单，保存
-	
----
+
+ ---
 ### NTFS自动挂载
 > *   进入Windows将剩下硬盘空间划分为NTFS分区（D:，E:）
 > *   进入Arch，将D:盘自动挂载到/home/workspace
-	
+
 	# sudo pacman -S ntfs-3g	// 安装ntfs文件系统
 	# sudo mount -w /dev/sda11 /home/workspace
 	# sudo atom /etc/fstab	// 修改分区，文件系统配置文件
 	>    /dev/sda11    /home/workspace    ntfs-3g    rw,users,noatime    0 0
 
----
+ ---
 ### Windows Linux时间同步
 > *   时间存储方式分为两类，一类为世界同一时间加时区（UTC，GMT），一类为本地时间LocalTime，linux系统使用UTC，Windows系统使用LT，因此会出现切换系统时，时间时大时小
 > 1.  Windows修改为UTC时间，关闭Windows时间同步
@@ -199,16 +199,16 @@
 > 3.  进入Arch
 
 	# sudo timedatectl set-local-rtc false	// 设置硬件时钟显示方式为UTC
-	# sudo timedatectl status	
+	# sudo timedatectl status
 
----
+ ---
 ### 显卡配置
 > *   禁用nvidia独显
 
 	# sudo pacman -S bbswitch
 	# sudo atom /etc/modules-load.d/bbswitch.conf	// 每次启动加载bbswitch模块
 	>    bbswitch
-	# sudo atom /etc/modprobe.d/bbswitch.conf	// bbswitch加载参数，默认关闭	
+	# sudo atom /etc/modprobe.d/bbswitch.conf	// bbswitch加载参数，默认关闭
 	>    options bbswitch load_state=0
 	# sudo atom /etc/modprobe.d/nouveau_blacklist.conf	// 关闭组织显卡关闭的占用模块
 	>    blacklist nouveau
@@ -224,6 +224,6 @@
 	>    esac
 	# sudo chmod +x /usr/lib/systemd/system-shutdown/nvidia_card_enable.sh	// 添加执行权限
 
----
+ ---
 ### 主题及美化
 > *   
