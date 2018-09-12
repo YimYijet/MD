@@ -35,10 +35,10 @@
 	        }
 	        arr[left] = pivot
 	        if (sub < left - 1) {
-	            quickSort(arr, sub, left - 1)
+	            return quickSort(arr, sub, left - 1)
 	        }
 	        if (left + 1 < sup) {
-	            quickSort(arr, left + 1 , sup)
+	            return quickSort(arr, left + 1 , sup)
 	        }
 	    }
 	}
@@ -105,10 +105,10 @@
         let middle = (right + left) >> 1
         if (left < right) {
             if (left < middle) {
-                mergeSort(arr, left, middle, temp);
+                return mergeSort(arr, left, middle, temp);
             }
             if (middle + 1 < right) {
-                mergeSort(arr, middle + 1, right, temp);
+                return mergeSort(arr, middle + 1, right, temp);
             }
             merge(arr, left, right, middle, temp);
         }
@@ -515,6 +515,7 @@
         return tmp
     }
 
+#### 
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
 [归并非递归](https://www.cnblogs.com/bluestorm/archive/2012/09/06/2673138.html)
