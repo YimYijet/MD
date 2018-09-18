@@ -523,6 +523,41 @@
 
 ### 图
 
+    class Graph {
+        constructor(vertexs = [], edges = new Map() ,directed = false) {
+            if (edges instanceof Map) {
+                this.edges = edges
+            }
+            if (typeof edges == 'boolean') {
+                directed = edges
+            }
+            this.vertexs = vertexs
+            this.directed = directed
+        }
+        
+        addVertex(vertex) {
+            if (vertex instanceof Array) {
+                this.vertexs = vertex
+            } else {
+                this.vertexs.push(vertex)
+            }
+        }
+
+        addEdge([m, n]) {
+            if (this.vertexs.includes(m) && this.vertexs.includes(n)) {
+                if (this.directed) {
+                    this.edges[m] = n
+                } else {
+                    this.edges[m] = n
+                    this.edges[n] = m
+                }
+            } else {
+                throw new Error('unknown vertex')
+            }
+        }
+    }
+
+
 #### 广度优先搜索(BFS)
 > *   
 
