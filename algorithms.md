@@ -344,21 +344,21 @@
 
 	// 非递归
 	function inOrderTraversal(arr) {
-            let result = [], index = 0, stack = []
-            while (stack.length != 0 || !!arr[index]) {
-                if (index < arr.length) {
-                    stack.push(index)
-                    index = 2 * index + 1
-                } else {
-                    index = stack.pop()
-					if (arr[index]) {
-                    	result.push(arr[index])
-					}
-                    index = 2 * index + 2
-                }
+        let result = [], index = 0, stack = []
+        while (stack.length != 0 || !!arr[index]) {
+            if (index < arr.length) {
+                stack.push(index)
+                index = 2 * index + 1
+            } else {
+                index = stack.pop()
+				if (arr[index]) {
+                	result.push(arr[index])
+				}
+                index = 2 * index + 2
             }
-            return result
         }
+        return result
+    }
 
 #### 后序遍历
 > *   左子树 ---> 右子树 ---> 根节点
@@ -419,30 +419,34 @@
     }
 
 	// 减少遍历次数, 适合遍历非完全二叉树
-	function levelTraversal(arr) {
-        let result = [], stack = [], index = 0, left, right
-        while (index <= (arr.length - 1) >> 1)) {
-            if (stack.length == 0) {
-                if (arr[index]) {
-                    result.push(arr[index])
-                }
-                stack.push(index)
-            } else {
-                let tmp = stack
-                stack = []
-                while (tmp.length != 0) {
-                    index = tmp.shift()
-                    left = 2 * index + 1, right = 2 * index + 2
-                    if (arr[left]) {
-                        result.push(arr[left])
-                        stack.push(left)
-                    }
-                    if (arr[right]) {
-                        result.push(arr[right])
-                        stack.push(right)
-                    }
-                }
+	function levelTraversal(arr, callback) {
+        if (![...arr].shift()) {
+            return {}
+        }
+        const result = {}, queue = []
+        let curIndex = 0, cur = arr[curIndex]
+
+        queue.push(curIndex)
+        result[cur] = {}
+        result[cur].distance = 0
+        result[cur].predecessor = null
+
+        while (queue.length) {
+            curIndex = queue.shift()
+            cur = arr[curIndex]
+            if (arr[2 * curIndex + 1]) {
+                queue.push(2 * curIndex + 1)
+                result[arr[2 * curIndex + 1]] = {}
+                result[arr[2 * curIndex + 1]].distance = result[cur].distance + 1
+                result[arr[2 * curIndex + 1]].predecessor = cur
             }
+            if (arr[2 * curIndex + 2]) {
+                queue.push(2 * curIndex + 2)
+                result[arr[2 * curIndex + 2]] = {}
+                result[arr[2 * curIndex + 2]].distance = result[cur].distance + 1
+                result[arr[2 * curIndex + 2]].predecessor = cur
+            }
+            callback(cur)
         }
         return result
     }
@@ -522,34 +526,53 @@
     }
 
 ### 图
+> * 无权重的图
 
     class Graph {
-        constructor(vertexs = [], edges = new Map() ,directed = false) {
+        /** 
+         * 图构造函数
+         * @params vertices 图顶点
+         * @params edges    如果参数为Map类型为 图的边，链接表保存，为boolean时判断有向图
+         * @params directed 判断有向图 
+         */        
+        constructor(vertices = [], edges = new Map(), directed = false) {
             if (edges instanceof Map) {
                 this.edges = edges
             }
             if (typeof edges == 'boolean') {
                 directed = edges
             }
-            this.vertexs = vertexs
+            this.vertices = vertices
             this.directed = directed
+            this.vertices.forEach((item) => {
+                this.edges.set(item, [])
+            })
         }
-        
+
+        /** 
+         * 添加顶点
+         * @params vertex   如果参数类型为Array，替换原有全部顶点，否则添加顶点
+         */        
         addVertex(vertex) {
             if (vertex instanceof Array) {
-                this.vertexs = vertex
+                this.edges.clear()
+                this.vertices = vertex
+                this.vertices.forEach((item) => {
+                    this.edges.set(item, [])
+                })
             } else {
-                this.vertexs.push(vertex)
+                this.vertices.push(vertex)
+                this.edges.set(vertex, [])
             }
         }
 
-        addEdge([m, n]) {
-            if (this.vertexs.includes(m) && this.vertexs.includes(n)) {
+        addEdge(m, n) {
+            if (this.vertices.includes(m) && this.vertices.includes(n)) {
                 if (this.directed) {
-                    this.edges[m] = n
+                    this.edges.get(m).push(n)
                 } else {
-                    this.edges[m] = n
-                    this.edges[n] = m
+                    this.edges.get(n).push(m)
+                    this.edges.get(m).push(n)
                 }
             } else {
                 throw new Error('unknown vertex')
@@ -559,17 +582,80 @@
 
 
 #### 广度优先搜索(BFS)
-> *   
+> *   初始化每个点的标记为未检查，选一个起始点入队列，设为已检查
+> *   依次出队列，查询当前顶点的相邻点，遍历相邻点，检查相邻点是否已检查，未检查设为检查，并推入队列
+> *   终止条件：队列为空
 
+	function bfs(graph, callback, start = [...graph.vertices].shift()) {
+        if (!start) {
+            return {}
+        }
+        // vertices: 便利的顶点，有路径距离，前溯点属性  checked: 表示当前节点是否被检查过
+        const vertices = {}, queue = [], checked = []
+        graph.vertices.forEach((item) => {
+            vertices[item] = {
+                distance: 0,
+                predecessor: null,
+            },
+            checked[item] = 0
+        })
+        queue.push(start)
+        checked[start] = 1
+        while(queue.length) {
+            let cur = queue.shift()
+            graph.edges.get(cur).forEach((item) => {
+                if (!checked[item]) {
+                    queue.push(item)
+                    vertices[item].distance = vertices[cur].distance + 1
+                    vertices[item].predecessor = cur
+                    checked[item] = 1
+                }
+            })
+            callback(cur)
+        }
+        return vertices
+    }
 
+#### 深度优先搜索(DFS)
+> *   采用迭代的方式，类似于树的遍历，但是要在遍历过程中检查当前点是否已经并遍历过
+
+	function dfs(graph, callback, start = [...graph.vertices].shift()) {
+        if (!start) {
+            return {}
+        }
+        const vertices = {}, checked = []
+        graph.vertices.forEach((item) => {
+            vertices[item] = {
+                distance: 0,
+                predecessor: null,
+            },
+                checked[item] = 0
+        })
+        dfsRecur(graph, callback, start, checked, vertices)
+        return vertices
+    }
+    
+    function dfsRecur(graph, callback, start, checked, vertices) {
+        callback(start)
+        checked[start] = 1
+        graph.edges.get(start).forEach((item) => {
+            if (!checked[item]) {
+                vertices[item].distance = vertices[start].distance + 1
+                vertices[item].predecessor = start
+                dfsRecur(graph, callback, item, checked, vertices)
+            }
+        })
+    }
+
+---
 算法思想
 ---
 
-> *   __*无后向性：*__ 某个状态最优解由之前某个状态或某些状态得到，但与获得之前状态的过程无关
+> *   __*无后效性：*__ 某阶段状态一旦确定，就不受这个状态以后决策的影响
 
 ### 贪心算法
 > *   每个阶段的最优状态由上一个阶段最优状态决定
-> *   前提是选择的贪心策略具备无后向性
+> *   前提是选择的贪心策略具备无后效性
 > *   自顶向下的处理问题
 > *   贪心算法根据贪心策略的选择并不一定可以得到问题的最优解，通常是近似解
 
@@ -591,8 +677,20 @@
 
 ### 动态规划
 > *   阶段的当前状态依赖于之前的某个或某些状态
-> *   每个阶段的最优状态可以从之前阶段的某个或某些状态直接获得
+> *   每个阶段的最优状态可以从之前阶段的某个或某些状态直接获得而不管之前这个状态如何得到的
+
+#### 特征
+> 1.  问题具有最优子结构，即问题的最优解其包含的子问题的解也最优
+> 2.  每个阶段都具有无后效性
+> 3.  子问题不独立
+
+#### 思路
+> 1.  根据问题的时间或空间特征，将问题划分为若干阶段，划分后的阶段应该是有序的或可排序的，否则无法求解
+> 2.  将问题各个阶段的不同情况下的不同状态存储起来
+> 3.  因为决策和状态转移有着天然的联系，状态转移就是根据上一阶段的状态和决策来导出本阶段的状态。所以如果确定了决策，状态转移方程也就可写出。但事实上常常是反过来做，根据相邻两个阶段的状态之间的关系来确定决策方法和状态转移方程
+> 4.  给出的状态转移方程是一个递推式，需要一个递推的终止条件或边界条件
 
 ---
 [参考](https://www.cnblogs.com/yu-chao/p/4324485.html)
 [归并非递归](https://www.cnblogs.com/bluestorm/archive/2012/09/06/2673138.html)
+[五大算法思想](https://blog.csdn.net/KingCat666/article/details/73611009)
