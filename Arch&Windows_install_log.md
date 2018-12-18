@@ -66,7 +66,7 @@ Arch Windows10 双系统安装日志
 	# arch-chroot /mnt	// 切换根路径
 	# nano /etc/locale.gen	// 修改编码，去掉en_US.UTF-8，zh_CN.UTF-8，zh_TW.UTF-8前的#
 	# locale-gen	// 重新生成编码表
-	# echo LANG=en_US.UTF-8 > /etc/local.conf	// 设置语言，务必设置为en，字体问题可能导致图形界面乱码（小方格）
+	# echo LANG=en_US.UTF-8 > /etc/locale.conf	// 设置语言，务必设置为en，字体问题可能导致图形界面乱码（小方格）
 	# timedatectl status	// 查看系统时间，主要看RTC时间
 	# ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime	// 设置时区
 	# hwclock --systohc
@@ -74,7 +74,7 @@ Arch Windows10 双系统安装日志
 	# useradd -m -g users -G $groupname -s /bin/bash $username // 添加用户设置组名，用户名
 	# passwd $username	// 为用户设置密码
 	# nano /etc/mkinitcpio.conf	// /usr分区是独立分区，修改配置文件重启后才能进入系统
-	>    把 MODULES=() 改为 MODULES=(ahci btrfs)    // 开启ACHI模式，优化问题，可以不改
+	>    把 MODULES=() 改为 MODULES=(ahci btrfs)    // 开启AHCI模式，优化问题，可以不改
 	>    在 HOOKS 结尾添加 usr shutdown   
 	>    去掉 COMPRESSION="xz" 前的#    // xz压缩效率更高
 	# pacman -S btrfs-progs	// 安装btrfs 文件系统环境，安装完成后会重新生成img文件
@@ -88,7 +88,7 @@ Arch Windows10 双系统安装日志
 	# pacman -S xorg	// 安装图形驱动
 	# pacman -S plasma	// 安装KDE的plasma桌面
 	# pacman -S sddm	// 安装显示管理器，用于启动桌面
-	# systemctl enable sddm	// 开机自启动服务
+	# systemctl enable sddm.service	// 开机自启动服务
 	# pacman -S networkmanager	// 安装图形网络管理器
 	# systemctl enable NetworkManager.service	// 开机启动网络管理
 	# pacman -S tlp tlp-rdw	// 安装tlp电源管理器
@@ -133,7 +133,8 @@ Arch Windows10 双系统安装日志
 	# sudo pacman -Sy archlinuxcn-keyring	// 安装archlinuxcn GPG key
 
 	# sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
-	# sudo atom ~/.xinit	// 配置.xinit
+	# sudo atom ~/.xprofile	// 配置.xprofile, 图形界面启动
+	# sudo atom ~/.xinitrc	// 配置.xinitrc, 非图形界面启动
 	>    export GTK_IM_MODULE=fcitx
 	>    export QT_IM_MODULE=fcitx
 	>    export XMODIFIERS="@im=fcitx"
