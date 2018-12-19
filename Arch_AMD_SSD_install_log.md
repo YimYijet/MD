@@ -121,6 +121,14 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	timeout 0
 	editor 0
 
+	# nano /boot/loader/entries/arch.conf
+
+	如下设置：
+	title         Arch Linux
+	linux         /vmlinuz-linux
+	initrd        /initramfs-linux.img
+	options       root=/dev/sda3 rw
+
 	# exit
 	# reboot
 
@@ -151,7 +159,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	[archlinuxcn]
 	Server = https://cdn.repo.archlinuxcn.org/$arch
 	
-	$ sudo pacman -S archlinuxcn-keyring	// 安装archlinuxcn-keyring包以导入GPG key
+	$ sudo pacman -Sy archlinuxcn-keyring	// 安装archlinuxcn-keyring包以导入GPG key
 	$ sudo pacman -S archlinuxcn-mirrorlist-git	// 安装archlinuxcn镜像列表
 	
 	$ sudo code /etc/pacman.d/mirrorlist	// 修改镜像源
@@ -207,18 +215,21 @@ swap|swap|2G|swap|2099200s|6293503s|-
 ### 常用软件
 
 	$ sudo pacman -S yay	// AUR包管理器
-	$ sudo yay -S git	// 安装git
-	$ sudo yay -S dolphin dolphin-plugins	// dolphin文件管理器
-	$ sudo yay -S unrar zip unzip ark	// 压缩及解压缩工具
-	$ sudo yay -S dragon	// dragon 播放器
-	$ sudo yay -S okular // 文档阅读器
-	$ sudo yay -S kget wget	// 下载器
-	$ sudo yay -S gwenview	// 图片查看
-	$ sudo yay -S netease-cloud-music	// 网易云音乐
-	$ sudo yay -S fcitx-sogoupinyin	// 搜狗拼音
-	$ sudo yay -S latte-dock	// dock
+	$ yay -S git	// 安装git
+	$ yay -S chromium
+	$ yay -S dolphin dolphin-plugins	// dolphin文件管理器
+	$ yay -S unrar rar zip unzip ark	// 压缩及解压缩工具
+	$ yay -S dragon	// dragon 播放器
+	$ yay -S okular // 文档阅读器
+	$ yay -S kget wget	// 下载器
+	$ yay -S gwenview	// 图片查看
+	$ yay -S netease-cloud-music	// 网易云音乐
+	$ yay -S fcitx-sogoupinyin	// 搜狗拼音
+	$ yay -S latte-dock	// dock
 
 ---
 ### 美化
 
 图标：[Papirus](https://store.kde.org/p/1166289/)
+应用风格：Breezemite
+桌面主题：Aex
