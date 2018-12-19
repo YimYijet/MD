@@ -15,6 +15,11 @@
 	</tr>
 </table>
 
+表头|表头|表头
+---|:--:|---:
+内容|内容|内容
+内容|内容|内容
+
 ---
 > this is first part
 >> this is second part
