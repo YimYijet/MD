@@ -230,6 +230,78 @@ swap|swap|2G|swap|2099200s|6293503s|-
 ---
 ### 美化
 
-图标：[Papirus](https://store.kde.org/p/1166289/)
-应用风格：Breezemite
+菜单：UMenu</br>
+图标：[Papirus](https://store.kde.org/p/1166289/)</br>
+应用风格：Breezemite</br>
 桌面主题：Aex
+
+---
+### conky及配置
+
+	$ yay -S conky
+	$ code ~/.conkyrc
+
+	修改如下：
+	
+	#Setting
+	background yes
+	alignment top_right
+	gap_y 40
+	cpu_avg_samples 2
+	net_avg_samples 2
+	minimum_size 300 5
+	maximum_width 500
+	no_buffers yes
+	double_buffer yes
+	out_to_console no
+	own_window yes
+	own_window_transparent yes
+	own_window_type override
+	update_interval 2
+	use_xft yes
+	xftalpha 0.8
+	xftfont DejaVu Sans:size=12
+	default_color grey
+	draw_shades no
+	draw_borders no
+	draw_graph_borders no
+	
+	TEXT
+	${color}${font DejaVu Sans:size=40}S${font DejaVu Sans:size=20}YSTEM
+	${font}${voffset -10}${color}HOSTNAME${alignr}${color white}$nodename 
+	${color}KERNEL${alignr}${color white}$kernel
+	${color}UPTIME${alignr}${color white}$uptime 
+	${color}TIME${alignr}${color white}${font}${time %H:%M} ${time %y/%m/%d}
+	${color}UPDATE${alignr}${color white}${execpi 3600 checkupdates | wc -l} packages
+	${color}${hr 2}
+	${color}${font DejaVu Sans:size=40}C${font DejaVu Sans:size=20}PU\
+	${font}${voffset -20}${alignr}${cpugraph cpu0 20,150}
+	${color}FREQ${alignr}${color white}${freq_g}GHz
+	${color}TEMP${alignr}${color white}${acpitemp}°C
+	${color}LOAD${alignr}${color white}${loadavg}
+	${color}USE${alignr}${color white}${cpu cpu0}%
+	${color}${cpubar cpu0 6}
+	${color}${font DejaVu Sans:size=40}M${font DejaVu Sans:size=20}EM\
+	${font}${voffset -20}${alignr}${memgraph 20,150}
+	${color}LOAD${alignr}${color white}$mem / $memmax
+	${color}SWAP${alignr}${color white}$swap / $swapmax
+	${color}USE${alignr}${color white}$memperc%
+	${color}${membar 6}
+	${color}Highest_use${alignc -40}CPU%${alignr}MEM%
+	${top name 1}${alignc -30}${top cpu 1}${alignr}${top mem 1}
+	${top name 2}${alignc -30}${top cpu 2}${alignr}${top mem 2}
+	${top name 3}${alignc -30}${top cpu 3}${alignr}${top mem 3}
+	${color}${hr 2}
+	${color}${font DejaVu Sans:size=40}N${font DejaVu Sans:size=20}ET\
+	${font}${voffset -20}${alignr}${downspeedgraph ppp0 20,100 grey grey}
+	${color}Down${alignr}${color white}${downspeedf ppp0} k/s
+	${color}Up${alignr}${color white}${upspeedf ppp0} k/s
+	${color}${hr 2}
+	${color}${font DejaVu Sans:size=40}D${font DejaVu Sans:size=20}ISK\
+	${font}${voffset -20}${alignr}${diskiograph sda 20,150}
+	${color}READ${alignr}${color white}${diskio_read sda}
+	${color}WRITE${alignr}${color white}${diskio_write sda}
+	${color}/ ${fs_used /} / ${fs_size /}${alignr}${color white}${fs_used_perc /}%
+	${color}${fs_bar 6 /}
+	${color}/home ${fs_used /home} / ${fs_size /home}${alignr}${color white}${fs_used_perc /home}%
+	${color}${fs_bar 6 /home}
