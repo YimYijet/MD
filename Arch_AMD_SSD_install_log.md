@@ -232,65 +232,92 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	修改如下：
 	
-	#Setting
-	background yes
-	alignment top_right
-	gap_y 40
-	cpu_avg_samples 2
-	net_avg_samples 2
-	minimum_size 300 5
-	maximum_width 500
-	no_buffers yes
-	double_buffer yes
-	out_to_console no
-	own_window yes
-	own_window_transparent yes
-	own_window_type override
-	update_interval 2
-	use_xft yes
-	xftalpha 0.8
-	xftfont DejaVu Sans:size=12
-	default_color grey
-	draw_shades no
-	draw_borders no
-	draw_graph_borders no
+	conky.config = {
+		alignment = 'top_right',
+		background = false,
+		cpu_avg_samples = 2,
+		default_color = 'grey',
+		double_buffer = true,
+		draw_shades = false,
+		draw_outline = false,
+		draw_borders = false,
+		draw_graph_borders = false,
+		extra_newline = false,
+		font = 'DejaVu Sans Mono:pixelsize=12',
+		gap_y = 40,
+		net_avg_samples = 2,
+		no_buffers = true,
+		maximum_width = 500,
+		minimum_width = 300,
+		minimum_height = 5,
+		out_to_console = false,
+		out_to_stderr = false,
+		own_window = true,
+		own_window_class = 'Conky',
+		own_window_colour = '000000',
+		own_window_type = 'desktop',
+		own_window_transparent = true,
+		own_window_argb_visual = true,
+    	own_window_argb_count = 0,
+		own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
+		stippled_borders = 0,
+		show_graph_scale = false,
+    	show_graph_range = false
+		update_interval = 1,
+		uppercase = false,
+    	use_spacer = 'none',
+		use_xft = true,
+		xftalpha = 0.8
+	}
 	
-	TEXT
-	${color}${font DejaVu Sans:size=40}S${font DejaVu Sans:size=20}YSTEM
-	${font}${voffset -10}${color}HOSTNAME${alignr}${color white}$nodename 
-	${color}KERNEL${alignr}${color white}$kernel
-	${color}UPTIME${alignr}${color white}$uptime 
-	${color}TIME${alignr}${color white}${font}${time %H:%M} ${time %y/%m/%d}
-	${color}UPDATE${alignr}${color white}${execpi 3600 checkupdates | wc -l} packages
-	${color}${hr 2}
-	${color}${font DejaVu Sans:size=40}C${font DejaVu Sans:size=20}PU\
-	${font}${voffset -20}${alignr}${cpugraph cpu0 20,150}
-	${color}FREQ${alignr}${color white}${freq_g}GHz
-	${color}TEMP${alignr}${color white}${acpitemp}°C
-	${color}LOAD${alignr}${color white}${loadavg}
-	${color}USE${alignr}${color white}${cpu cpu0}%
-	${color}${cpubar cpu0 6}
-	${color}${font DejaVu Sans:size=40}M${font DejaVu Sans:size=20}EM\
-	${font}${voffset -20}${alignr}${memgraph 20,150}
-	${color}LOAD${alignr}${color white}$mem / $memmax
-	${color}SWAP${alignr}${color white}$swap / $swapmax
-	${color}USE${alignr}${color white}$memperc%
-	${color}${membar 6}
-	${color}Highest_use${alignc -40}CPU%${alignr}MEM%
-	${top name 1}${alignc -30}${top cpu 1}${alignr}${top mem 1}
-	${top name 2}${alignc -30}${top cpu 2}${alignr}${top mem 2}
-	${top name 3}${alignc -30}${top cpu 3}${alignr}${top mem 3}
-	${color}${hr 2}
-	${color}${font DejaVu Sans:size=40}N${font DejaVu Sans:size=20}ET\
-	${font}${voffset -20}${alignr}${downspeedgraph ppp0 20,100 grey grey}
-	${color}Down${alignr}${color white}${downspeedf ppp0} k/s
-	${color}Up${alignr}${color white}${upspeedf ppp0} k/s
-	${color}${hr 2}
-	${color}${font DejaVu Sans:size=40}D${font DejaVu Sans:size=20}ISK\
-	${font}${voffset -20}${alignr}${diskiograph sda 20,150}
-	${color}READ${alignr}${color white}${diskio_read sda}
-	${color}WRITE${alignr}${color white}${diskio_write sda}
-	${color}/ ${fs_used /} / ${fs_size /}${alignr}${color white}${fs_used_perc /}%
-	${color}${fs_bar 6 /}
-	${color}/home ${fs_used /home} / ${fs_size /home}${alignr}${color white}${fs_used_perc /home}%
-	${color}${fs_bar 6 /home}
+	conky.text = [[
+		# System
+		${color}${font DejaVu Sans Mono:pixelsize=40}S${font DejaVu Sans Mono:pixelsize=20}YSTEM
+		${font}${voffset -10}${color}HOSTNAME${alignr}${color}$nodename 
+		${color}KERNEL${alignr}${color}$kernel
+		${color}UPTIME${alignr}${color}$uptime 
+		${color}TIME${alignr}${color}${font}${time %H:%M} ${time %y/%m/%d}
+		# ${color}UPDATE${alignr}${color}${execpi 3600 checkupdates | wc -l} packages
+		${color}${hr 2}
+		# CPU
+		${color}${font DejaVu Sans Mono:pixelsize=40}C${font DejaVu Sans Mono:pixelsize=20}PU\
+		${font}${voffset -20}${alignr}${cpugraph cpu0 20,150}
+		${color}FREQ${alignr}${color}${freq_g}GHz
+		${color}TEMP${alignr}${color}${acpitemp}°C
+		${color}LOAD${alignr}${color}${loadavg}
+		${color}USE${alignr}${color}${cpu cpu0}%
+		${color}${cpubar cpu0 6}
+		# Memery
+		${color}${font DejaVu Sans Mono:pixelsize=40}M${font DejaVu Sans Mono:pixelsize=20}EM\
+		${font}${voffset -20}${alignr}${memgraph 20,150}
+		${color}LOAD${alignr}${color}$mem / $memmax
+		${color}SWAP${alignr}${color}$swap / $swapmax
+		${color}USE${alignr}${color}$memperc%
+		${color}${membar 6}
+		${color}Highest_use${alignc -40}CPU%${alignr}MEM%
+		${top name 1}${alignc -30}${top cpu 1}${alignr}${top mem 1}
+		${top name 2}${alignc -30}${top cpu 2}${alignr}${top mem 2}
+		${top name 3}${alignc -30}${top cpu 3}${alignr}${top mem 3}
+		${color}${hr 2}
+		# Network
+		${color}${font DejaVu Sans Mono:pixelsize=40}N${font DejaVu Sans Mono:pixelsize=20}ET\
+		${font}${voffset -20}${alignr}${downspeedgraph ppp0 20,100 grey grey}
+		${color}Down${alignr}${color}${downspeedf ppp0} k/s
+		${color}Up${alignr}${color}${upspeedf ppp0} k/s
+		${color}${hr 2}
+		# Disk
+		${color}${font DejaVu Sans Mono:pixelsize=40}D${font DejaVu Sans Mono:pixelsize=20}ISK\
+		${font}${voffset -20}${alignr}${diskiograph sda 20,150}
+		${color}READ${alignr}${color}${diskio_read sda}
+		${color}WRITE${alignr}${color}${diskio_write sda}
+		${color}/ ${fs_used /} / ${fs_size /}${alignr}${color}${fs_used_perc /}%
+		${color}${fs_bar 6 /}
+		${color}/boot ${fs_used /boot} / ${fs_size /boot}${alignr}${color}${fs_used_perc /boot}%
+		${color}${fs_bar 6 /boot}
+		${color}/var ${fs_used /var} / ${fs_size /var}${alignr}${color}${fs_used_perc /var}%
+		${color}${fs_bar 6 /var}
+		${color}/usr ${fs_used /usr} / ${fs_size /usr}${alignr}${color}${fs_used_perc /usr}%
+		${color}${fs_bar 6 /usr}
+		${color}/home ${fs_used /home} / ${fs_size /home}${alignr}${color}${fs_used_perc /home}%
+		${color}${fs_bar 6 /home}
+	]]
