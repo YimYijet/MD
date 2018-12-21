@@ -218,6 +218,8 @@ swap|swap|2G|swap|2099200s|6293503s|-
 		git-open					// 在终端里打开当前项目的远程仓库地址 - 下载
 	)
 
+	alias hosts='sudo wget https://raw.githubusercontent.com/googlehosts/hosts/master/hosts-files/hosts -O /etc/hosts'
+	
 	$ source .zshrc	// 载入配置
 
 ---
