@@ -203,20 +203,37 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	autoload -U compinit
 	compinit
 
+	ZSH_THEME="bullet-train"
+
+	plugins=(
+		git
+		z							// 命令快速跳转目录
+		web-search					// 在命令行中使用搜索引擎进行搜索
+		nvm							// nodejs 版本控制
+		npm							// npm 及 npm 部分命令别称
+		node						// node 及 node-docs 命令
+		golang						// go 及 go 部分命令别称
+		zsh-syntax-highlighting		// 输入正确会绿色高亮显示 - 下载
+		zsh-autosuggestions			// 给出建议的命令 - 下载
+		git-open					// 在终端里打开当前项目的远程仓库地址 - 下载
+	)
+
+	$ source .zshrc	// 载入配置
+
 ---
 ### 常用软件
 
 	$ sudo pacman -S yay	// AUR包管理器
-	$ sudo yay -S git	// 安装git
-	$ sudo yay -S dolphin dolphin-plugins	// dolphin文件管理器
-	$ sudo yay -S unrar zip unzip ark	// 压缩及解压缩工具
-	$ sudo yay -S dragon	// dragon 播放器
-	$ sudo yay -S okular // 文档阅读器
-	$ sudo yay -S kget wget	// 下载器
-	$ sudo yay -S gwenview	// 图片查看
-	$ sudo yay -S netease-cloud-music	// 网易云音乐
-	$ sudo yay -S fcitx-sogoupinyin	// 搜狗拼音
-	$ sudo yay -S latte-dock	// dock
+	$ yay -S git	// 安装git
+	$ yay -S dolphin dolphin-plugins	// dolphin文件管理器
+	$ yay -S unrar zip unzip ark	// 压缩及解压缩工具
+	$ yay -S dragon	// dragon 播放器
+	$ yay -S okular // 文档阅读器
+	$ yay -S kget wget	// 下载器
+	$ yay -S gwenview	// 图片查看
+	$ yay -S netease-cloud-music	// 网易云音乐
+	$ yay -S fcitx-sogoupinyin	// 搜狗拼音
+	$ yay -S latte-dock	// dock
 
 ---
 ### 美化
@@ -277,7 +294,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 		${color}KERNEL${alignr}${color}$kernel
 		${color}UPTIME${alignr}${color}$uptime 
 		${color}TIME${alignr}${color}${font}${time %H:%M} ${time %y/%m/%d}
-		# ${color}UPDATE${alignr}${color}${execpi 3600 checkupdates | wc -l} packages
+		${color}UPDATE${alignr}${color}${execpi 3600 checkupdates | wc -l} packages
 		${color}${hr 2}
 		# CPU
 		${color}${font DejaVu Sans Mono:pixelsize=40}C${font DejaVu Sans Mono:pixelsize=20}PU\
