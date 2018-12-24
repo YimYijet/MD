@@ -7,9 +7,9 @@ path/type|name|size|fs|start|end|flags
 /boot|boot|1G|fat32|2048s|2099199s|boot,esp
 swap|swap|2G|swap|2099200s|6293503s|-
 /|root|10G|btrfs|6293504s|27265023s|-
-/var|var|2G|btrfs|27265024s|31459327s|-
-/usr|usr|30G|btrfs|31459328s|94373887s|-
-/home|home|remain|btrfs|94373888s|100%|-
+/var|var|10G|btrfs|27265024s|48236543s|-
+/usr|usr|30G|btrfs|48236544s|111151103s|-
+/home|home|remain|btrfs|111151104s|100%|-
 
 ---
 ### 系统安装
@@ -170,8 +170,8 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	$ sudo pacman -S wqy-microhei				// 安装文泉驿微米黑字体
 	$ sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
-	$ sudo code ~/.xprofile					// 配置.xprofile, 图形界面启动读取配置
-	$ sudo code ~/.xinitrc					// 配置.xinitrc, 非图形界面启动读取配置
+	$ code ~/.xprofile					// 配置.xprofile, 图形界面启动读取配置
+	$ code ~/.xinitrc					// 配置.xinitrc, 非图形界面启动读取配置
 
 	如下设置：
 	export GTK_IM_MODULE=fcitx
@@ -200,7 +200,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   交换内存
 
-	$ 
+	$ sudo echo vm.swappiness=10 > /etc/sysctl.conf		// 减少内存交换
 
 > *   配置zsh
 
@@ -208,12 +208,9 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ sudo pacman -S zsh		// 安装zsh
 	$ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"	// 安装 oh-my-zsh
 	$ sudo pacman -S neofetch	// 装逼神器
-	$ sudo code ~/.zshrc
-
-	末尾添加：
-	autoload -U compinit
-	compinit
-
+	$ code ~/.zshrc
+	
+	修改如下：
 	ZSH_THEME="bullet-train"
 
 	plugins=(
@@ -247,6 +244,18 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ yay -S netease-cloud-music		// 网易云音乐
 	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
 	$ yay -S latte-dock			// 轻量级dock
+	$ yay -S nginx-mainline			// nginx主分支，wiki推荐
+	$ yay -S mongodb			// mongodb
+
+> * nvm
+
+	$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+	$ code ~/.zshrc
+
+	末尾添加：
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ---
 ### 美化
