@@ -256,6 +256,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	$ source .zshrc	// 载入配置
 
+[bullet-train](https://github.com/caiogondim/bullet-train.zsh)</br>
 [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)</br>
 [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)</br>
 [git-open](https://github.com/paulirish/git-open)
