@@ -649,21 +649,18 @@
 
 ---
 ### 算术表达式
-> *   比较操作符优先级
-
-    /** 
-     * -1: m > n, 0: m = n, 1: m < n
-     */    
-    function compareOperation(m, n) {
+> *   获取操作符优先级
+   
+    function getPriority(o) {
         const priority = {
             '+': 1,
             '-': 1,
             '*': 2,
             '/': 2,
-            '(': 3,
             ')': 3,
+            '(': 3,
         }
-        return priority[n] - priority[m]
+        return priority[o] ? priority[o] : 0
     }
 
 #### 前缀表达式（波兰表达式）操作符在操作数之前
