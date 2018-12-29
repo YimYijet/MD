@@ -29,7 +29,7 @@
 	    let left = sub, right = sup
 	    if (sub < sup) {
 	        while (left < right) {
-				// 标志为低位时，需先从高位比较，反之亦然
+                // 标志为低位时，需先从高位比较，反之亦然
 	            while (arr[right] >= pivot && left < right) {
 	                right--
 	            }
@@ -145,9 +145,9 @@
      * 非递归实现归并排序, 将数组按照1, 2, 4, ..., 2^n个元素的顺序依次分割, 自底向上进行比较合并
      */        
     function mergeSort(arr) {
-		// leftMin~leftMax 划分了左侧待比较区域, right同理, next标志temp数组的下标移动
+	    // leftMin~leftMax 划分了左侧待比较区域, right同理, next标志temp数组的下标移动
         let i, leftMin, leftMax, rightMin, rightMax, next, temp = [], length = arr.length
-        for (i = 1; i < length; i *= 2) {	// 以2^n划分比较区域
+        for (i = 1; i < length; i *= 2) {	        // 以2^n划分比较区域
             for (leftMin = 0; leftMin < length - i; leftMin = rightMax) {	// 通过leftMin = rightMax, 将比较区域后移
                 rightMin = leftMax = leftMin + i	// 初始化左右比较区域的标志Max, 和下标移动Min
                 rightMax = leftMax + i
@@ -158,7 +158,7 @@
                 while (leftMin < leftMax && rightMin < rightMax) {
                     temp[next++] = arr[leftMin] > arr[rightMin] ? arr[rightMin++] : arr[leftMin++]
                 }
-                while (leftMin < leftMax) {		// 左侧比较区域只会比右侧大, 处理右侧数据不足时, 无法比较
+                while (leftMin < leftMax) {		        // 左侧比较区域只会比右侧大, 处理右侧数据不足时, 无法比较
                     arr[--rightMin] = arr[--leftMax]	// 将多出的部分存入arr  
                 }
                 while (next > 0) {
@@ -218,7 +218,7 @@
 
 #### 希尔排序
 > *   时间复杂度O(n)~O(n^（3/2）), 改进型的插入排序
-> *   希尔排序的效率与增量有关, 较优的增量为n/3+1, n/9+1, n/27+1 ... 1
+> *   希尔排序的效率与增量有关, 较优的增量为n/3+1, n/9+1, n/27+1 ... 1, 最优增量为e
 
 	function shellSort(arr) {
         let incr = 1, gap
@@ -247,18 +247,18 @@
 	        return arr[left + k - 1]
 	    }
 	    let median = left - 1, tmp
-		// 每五个元素为一组，找到每组中位数并交换至数组前列
+	    // 每五个元素为一组，找到每组中位数并交换至数组前列
 	    for (let i = left; i + 4 <= right; i += 5) {
 	        insertSort(arr, i, i + 4)
 	        tmp = arr[++median]
 	        arr[median] = arr[i + 2]
 	        arr[i + 2] = tmp
 	    }
-		// 找到所有中位数位于中间的下标
+	    // 找到所有中位数位于中间的下标
 	    let pivotIndex = (left + median) >> 1
-		// 中位数排序，调整位置
+	    // 中位数排序，调整位置
 	    select(arr, pivotIndex - left + 1, left, median)
-		// 根据中位数的中位数将数组分为小于这个数的部分和大于它的部分，并返回这个数
+	    // 根据中位数的中位数将数组分为小于这个数的部分和大于它的部分，并返回这个数
 	    let midIndex = partition(arr, left, right, pivotIndex)
 	    let index = midIndex - left + 1
 	    if (k == index) {
@@ -351,9 +351,9 @@
                 index = 2 * index + 1
             } else {
                 index = stack.pop()
-				if (arr[index]) {
+                if (arr[index]) {
                 	result.push(arr[index])
-				}
+                }
                 index = 2 * index + 2
             }
         }
@@ -390,9 +390,9 @@
                     stack.push(index)
                     index = 2 * index + 2
                 } else {		// 当前节点第二次出栈, 左右子树遍历完, 输出
-					if (arr[index]) {
-                    	result.push(arr[index])
-					}
+                    if (arr[index]) {
+                        result.push(arr[index])
+                    }
                     index = stack.pop()
                     flag[index] = false		// 重置当前节点的父节点状态, 因为其出栈并非栈顶出栈
                 }
@@ -596,7 +596,7 @@
             vertices[item] = {
                 distance: 0,
                 predecessor: null,
-            },
+            }
             checked[item] = 0
         })
         queue.push(start)
@@ -628,8 +628,8 @@
             vertices[item] = {
                 distance: 0,
                 predecessor: null,
-            },
-                checked[item] = 0
+            }
+            checked[item] = 0
         })
         dfsRecur(graph, callback, start, checked, vertices)
         return vertices
@@ -645,6 +645,148 @@
                 dfsRecur(graph, callback, item, checked, vertices)
             }
         })
+    }
+
+---
+### 算术表达式
+> *   获取操作符优先级
+   
+    function getPriority(o) {
+        const priority = {
+            '+': 1,
+            '-': 1,
+            '*': 2,
+            '/': 2,
+            ')': 3,
+            '(': 3,
+        }
+        return priority[o] ? priority[o] : 0
+    }
+
+#### 前缀表达式（波兰表达式）操作符在操作数之前
+> *   中缀转前缀
+
+    function polishNotation(expression) {
+        const expArr = expression.split(''), operator = [], result = []
+        while (expArr.length) {
+            // 从右往左读取表达式
+            let char = expArr.pop()
+            // 当为操作数时直接输出
+            if (/\d+/.test(char)) {
+                result.unshift(char)
+            // 当遇到闭合括号时pop出栈中所有的括号内的操作符
+            } else if ('(' == char) {
+                char = operator.shift()
+                while (char != ')') {
+                    result.unshift(char) 
+                    char = operator.shift()
+                }
+            // 操作符优先级大于等于栈中第一个，或栈为空，或栈第一个为括号，操作符压栈
+            } else if (getPriority(char) >= getPriority(operator[0]) || !operator.length || operator[0] == ')') {
+                operator.unshift(char)
+            // 取出所有在栈中优先级低于当前操作符的操作符，并把当前压栈
+            } else {
+                do {
+                    result.unshift(operator.shift())
+                } while (getPriority(char) < getPriority(operator[0]) && operator.length && operator[0] != ')')
+                operator.unshift(char)
+            }
+        }
+        result.unshift(...operator.reverse())
+        return result.join('')
+    }
+    
+> *   运算
+
+    function operatePN(expression) {
+        const expArr = expression.split(''), number = []
+        while (expArr.length) {
+            // 从右向左运算
+            let char = expArr.pop()
+            if (/\d+/.test(char)) {
+                number.unshift(Number(char))
+            } else {
+                let m = number.shift(), n = number.shift()
+                switch (char) {
+                    case '+':
+                    number.unshift(m + n)
+                    break
+                    case '-':
+                    number.unshift(m - n)
+                    break
+                    case '*':
+                    number.unshift(m * n)
+                    break
+                    case '/':
+                    number.unshift(m / n)
+                    break
+                }
+            }
+        }
+        return number[0]
+    }
+
+#### 后缀表达式（逆波兰表达式）操作符在操作数之后
+> *   中缀转后缀
+
+    function reservePolishiNotation(expression) {
+        const expArr = expression.split(''), operator = [], result = []
+        while (expArr.length) {
+            // 从左往右读取表达式
+            let char = expArr.shift()
+            // 当为操作数时直接输出
+            if (/\d+/.test(char)) {
+                result.push(char)
+            // 当遇到闭合括号时pop出栈中所有的括号内的操作符
+            } else if (')' == char) {
+                char = operator.shift()
+                while (char != '(') {
+                    result.push(char) 
+                    char = operator.shift()
+                }
+            // 操作符优先级大于栈中第一个，或栈为空，或栈第一个为括号，操作符压栈
+            } else if (getPriority(char) > getPriority(operator[0]) || !operator.length || operator[0] == '(') {
+                operator.unshift(char)
+            // 取出所有在栈中优先级不高于当前操作符的操作符，并把当前压栈
+            } else {
+                do {
+                    result.push(operator.shift())
+                } while (getPriority(char) <= getPriority(operator[0]) && operator.length && operator[0] != '(')
+                operator.unshift(char)
+            }
+        }
+        result.push(...operator.reverse())
+        return result.join('')
+    }
+
+> *   运算
+
+    function operateRPN(expression) {
+        const expArr = expression.split(''), number = []
+        while (expArr.length) {
+            // 从左向右运算
+            let char = expArr.shift()
+            if (/\d+/.test(char)) {
+                number.push(Number(char))
+            } else {
+                let m = number.pop(), n = number.pop()
+                switch (char) {
+                    case '+':
+                    number.push(n + m)
+                    break
+                    case '-':
+                    number.push(n - m)
+                    break
+                    case '*':
+                    number.push(n * m)
+                    break
+                    case '/':
+                    number.push(n / m)
+                    break
+                }
+            }
+        }
+        return number[0]
     }
 
 ---

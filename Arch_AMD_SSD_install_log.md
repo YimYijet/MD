@@ -29,6 +29,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   格式化文件系统
 
+	# mkfs.vfat -F 32 /dev/sda1	// 格式化esp分区为fat32文件系统
 	# mkswap /dev/sda2		// 创建交换分区
 	# swapon /dev/sda2		// 激活交换分区
 	# mkfs.btrfs -f /dev/sdaX 	// -f 强制格式化
@@ -200,7 +201,19 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   交换内存
 
-	$ sudo echo vm.swappiness=10 > /etc/sysctl.conf		// 减少内存交换
+	$ sudo code /etc/sysctl.conf		// 减少内存交换
+
+	如下设置：
+	vm.swappiness=10
+
+> *   内核快捷键
+
+	$ sudo code /etc/sysctl.conf		// 系统强制重启，Ctrl + Alt + SysRq + r, e, i, s, u, b
+
+	如下设置：
+	kernel.sysrq = 1
+	
+[死机解决](https://blog.csdn.net/openswc/article/details/9105071)
 
 > *   配置zsh
 
@@ -215,20 +228,38 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	plugins=(
 		git
-		z				// 命令快速跳转目录
-		web-search			// 在命令行中使用搜索引擎进行搜索
-		nvm				// nodejs 版本控制
-		npm				// npm 及 npm 部分命令别称
-		node				// node 及 node-docs 命令
-		golang				// go 及 go 部分命令别称
-		zsh-syntax-highlighting		// 输入正确会绿色高亮显示 - 下载
-		zsh-autosuggestions		// 给出建议的命令 - 下载
-		git-open			// 在终端里打开当前项目的远程仓库地址 - 下载
+		# 命令快速跳转目录
+		z
+		# 在命令行中使用搜索引擎进行搜索
+		web-search
+		# nodejs 版本控制
+		nvm
+		# npm 及 npm 部分命令别称
+		npm
+		# node 及 node-docs 命令
+		node
+		# go 及 go 部分命令别称
+		golang
+		# 输入正确会绿色高亮显示
+		zsh-syntax-highlighting
+		# 给出建议的命令
+		zsh-autosuggestions
+		# 在终端里打开当前项目的远程仓库地址
+		git-open
 	)
 
 	alias hosts='sudo wget https://raw.githubusercontent.com/googlehosts/hosts/master/hosts-files/hosts -O /etc/hosts'
 	
+	$ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting		// 安装zsh-syntax-highlighting
+	$ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions			// 安装zsh-autosuggestions
+	$ git clone https://github.com/paulirish/git-open.git $ZSH_CUSTOM/plugins/git-open								// 安装git-open
+
 	$ source .zshrc	// 载入配置
+
+[bullet-train](https://github.com/caiogondim/bullet-train.zsh)</br>
+[zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)</br>
+[zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)</br>
+[git-open](https://github.com/paulirish/git-open)
 
 ---
 ### 常用软件
@@ -256,6 +287,8 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	export NVM_DIR="$HOME/.nvm"
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[nvm](https://github.com/creationix/nvm)
 
 ---
 ### 美化
