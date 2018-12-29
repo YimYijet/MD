@@ -83,7 +83,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	按如下设置：
 	1.  把 MODULES=() 改为 MODULES=(ahci btrfs)    	// 开启AHCI模式，优化问题，可以不改
-	2.  在 HOOKS 结尾添加 usr
+	2.  在 HOOKS 结尾添加 usr shutdown
 	3.  去掉 COMPRESSION="xz" 前的#    		// xz压缩效率更高
 	
 	# mkinitcpio -p linux				// 更改mkinitcpio配置后，需要手动重新生成镜像（但下一步安装btrfs-progs时会自动更新.img，故非必用）
