@@ -201,14 +201,14 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   交换内存
 
-	$ sudo code /etc/sysctl.conf		// 减少内存交换
+	$ sudo code /etc/sysctl.d/99-sysctl.conf		// 减少内存交换
 
 	如下设置：
 	vm.swappiness=10
 
 > *   内核快捷键
 
-	$ sudo code /etc/sysctl.conf		// 系统强制重启，Ctrl + Alt + SysRq + r, e, i, s, u, b
+	$ sudo code /etc/sysctl.d/99-sysctl.conf		// 系统强制重启，Ctrl + Alt + SysRq + r, e, i, s, u, b
 
 	如下设置：
 	kernel.sysrq = 1
