@@ -660,6 +660,8 @@
             '-': 1,
             '*': 2,
             '/': 2,
+            '(': 3,
+            ')': 3,
         }
         return priority[n] - priority[m]
     }
@@ -697,6 +699,35 @@
         return result.join('')
     }
     
+> *   运算
+
+    function operatePN(expression) {
+        const expArr = expression.split(''), number = []
+        while (expArr.length) {
+            // 从右向左运算
+            let char = expArr.pop()
+            if (/\d+/.test(char)) {
+                number.unshift(Number(char))
+            } else {
+                let m = number.shift(), n = number.shift()
+                switch (char) {
+                    case '+':
+                    number.unshift(m + n)
+                    break
+                    case '-':
+                    number.unshift(m - n)
+                    break
+                    case '*':
+                    number.unshift(m * n)
+                    break
+                    case '/':
+                    number.unshift(m / n)
+                    break
+                }
+            }
+        }
+        return number[0]
+    }
 
 #### 后缀表达式（逆波兰表达式）操作符在操作数之后
 > *   中缀转后缀
@@ -729,6 +760,36 @@
         }
         result.push(...operator.reverse())
         return result.join('')
+    }
+
+> *   运算
+
+    function operateRPN(expression) {
+        const expArr = expression.split(''), number = []
+        while (expArr.length) {
+            // 从左向右运算
+            let char = expArr.shift()
+            if (/\d+/.test(char)) {
+                number.push(Number(char))
+            } else {
+                let m = number.pop(), n = number.pop()
+                switch (char) {
+                    case '+':
+                    number.push(n + m)
+                    break
+                    case '-':
+                    number.push(n - m)
+                    break
+                    case '*':
+                    number.push(n * m)
+                    break
+                    case '/':
+                    number.push(n / m)
+                    break
+                }
+            }
+        }
+        return number[0]
     }
 
 ---
