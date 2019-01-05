@@ -288,7 +288,17 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ yay -S nginx-mainline			// nginx主分支，wiki推荐
 	$ yay -S mongodb			// mongodb
 
-> * nvm
+> *   mongodb配置
+
+	$ sudo mkdir -p /data/db
+	$ sudo chown `$username` /data/db
+
+	$ code ~/.config/mongodb/mongodb.conf
+
+	添加如下：
+	dbpath=/data/db
+
+> *   nvm
 
 	$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 	$ code ~/.zshrc
@@ -306,7 +316,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 菜单：UMenu</br>
 图标：[Papirus](https://store.kde.org/p/1166289/)</br>
 应用风格：Breezemite</br>
-桌面主题：Aex
+桌面主题：Macbreeze Shadowless
 
 ---
 ### conky及配置
