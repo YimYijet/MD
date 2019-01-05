@@ -215,6 +215,16 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	
 [死机解决](https://blog.csdn.net/openswc/article/details/9105071)
 
+> *   openssh
+
+	$ yay -S openssh
+	$ sudo code /etc/ssh/sshd_config
+
+	添加如下： 
+	AllowUsers    $username
+
+	$ systemctl enable sshd.service
+
 > *   配置zsh
 
 	$ echo $SHELL			// 查看当前shell
@@ -268,7 +278,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ yay -S git				// 安装git
 	$ yay -S dolphin dolphin-plugins	// dolphin文件管理器
 	$ yay -S unrar zip unzip ark		// 压缩及解压缩工具
-	$ yay -S dragon				// dragon 播放器
+	$ yay -S bomi				// bomi 播放器
 	$ yay -S okular 			// 文档阅读器
 	$ yay -S kget wget			// 下载器
 	$ yay -S gwenview			// 图片查看
