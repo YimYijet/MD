@@ -1,5 +1,6 @@
-MagicBook Archlinux安装日志
+MagicBook ![archlinux logo](./archlinux-logo-dark.png) 安装日志
 ---
+
 
 ### GPT分区
 path/type|name|size|fs|start|end|flags
@@ -309,6 +310,26 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [nvm](https://github.com/creationix/nvm)
+
+> *   gvm
+
+	$ bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+
+> 1.  gvm下载源是[https://go.googlesource.com/go](https://go.googlesource.com/go)，国内无法访问，使用如下命令修改源：
+
+	$ gvm install go1.11.4 --source=https://github.com/golang/go
+
+
+> 2.  在[中科大镜像](http://mirrors.ustc.edu.cn/golang/)下载二进制安装包，放到~/.gvm/archive目录下，使用二进制安装
+
+	$ gvm install go1.11.4 -B
+
+
+	$ gvm use go1.11.4 --default 		// 默认是用，不加--default，每次打开命令行都要use
+	$ mkdir -p ~/Workspace/Golang		// 创建go项目工作空间
+	$ cd ~/Workspace/Golang
+	$ gvm pkgset create --local		// 将当前目录设为本地的pkgset
+	$ gvm pkgset use --local		// 将当前目录添加到GOPATH
 
 ---
 ### 美化
