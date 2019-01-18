@@ -290,13 +290,13 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   mongodb配置
 
-	$ sudo mkdir -p /data/db
-	$ sudo chown `$username` /data/db
+	$ sudo mkdir -p /var/db/mongodb
+	$ sudo chown `$username` /var/db/mongodb
 
 	$ code ~/.config/mongodb/mongodb.conf
 
 	添加如下：
-	dbpath=/data/db
+	dbpath=/var/db/mongodb
 
 > *   nvm
 
