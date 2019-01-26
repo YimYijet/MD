@@ -297,7 +297,15 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ code ~/.config/mongodb/mongodb.conf
 
 	添加如下：
+<<<<<<< HEAD
 	dbpath=/var/db/mongodb
+=======
+	dbpath=/data/db	#数据库路径
+	logappend=true #错误日志采用追加模式，配置这个选项后mongodb的日志会追加到现有的日志文件，而不是从新创建一个新文件
+	journal=true #启用日志文件，默认启用
+	quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false
+	port=27017 #端口号 默认为27017
+>>>>>>> c98f61d44819d038eefc932f244681546435beb5
 
 > *   nvm
 
@@ -338,101 +346,3 @@ swap|swap|2G|swap|2099200s|6293503s|-
 图标：[Papirus](https://store.kde.org/p/1166289/)</br>
 应用风格：Breezemite</br>
 桌面主题：Macbreeze Shadowless
-
----
-### conky及配置
-
-	$ yay -S conky
-	$ code ~/.conkyrc
-
-	修改如下：
-	
-	conky.config = {
-		alignment = 'top_right',
-		background = false,
-		cpu_avg_samples = 2,
-		default_color = 'grey',
-		double_buffer = true,
-		draw_shades = false,
-		draw_outline = false,
-		draw_borders = false,
-		draw_graph_borders = false,
-		extra_newline = false,
-		font = 'DejaVu Sans Mono:pixelsize=12',
-		gap_y = 40,
-		net_avg_samples = 2,
-		no_buffers = true,
-		maximum_width = 500,
-		minimum_width = 300,
-		minimum_height = 5,
-		out_to_console = false,
-		out_to_stderr = false,
-		own_window = true,
-		own_window_class = 'Conky',
-		own_window_colour = '000000',
-		own_window_type = 'desktop',
-		own_window_transparent = true,
-		own_window_argb_visual = true,
-    	own_window_argb_count = 0,
-		own_window_hints = 'undecorated,below,sticky,skip_taskbar,skip_pager',
-		stippled_borders = 0,
-		show_graph_scale = false,
-    	show_graph_range = false,
-		update_interval = 1,
-		uppercase = false,
-    	use_spacer = 'none',
-		use_xft = true,
-		xftalpha = 0.8
-	}
-	
-	conky.text = [[
-		# System
-		${color}${font DejaVu Sans Mono:pixelsize=40}S${font DejaVu Sans Mono:pixelsize=20}YSTEM
-		${font}${voffset -10}${color}HOSTNAME${alignr}${color}$nodename 
-		${color}KERNEL${alignr}${color}$kernel
-		${color}UPTIME${alignr}${color}$uptime 
-		${color}TIME${alignr}${color}${font}${time %H:%M} ${time %y/%m/%d}
-		${color}UPDATE${alignr}${color}${execpi 3600 checkupdates | wc -l} packages
-		${color}${hr 2}
-		# CPU
-		${color}${font DejaVu Sans Mono:pixelsize=40}C${font DejaVu Sans Mono:pixelsize=20}PU\
-		${font}${voffset -20}${alignr}${cpugraph cpu0 20,150}
-		${color}FREQ${alignr}${color}${freq_g}GHz
-		${color}TEMP${alignr}${color}${acpitemp}°C
-		${color}LOAD${alignr}${color}${loadavg}
-		${color}USE${alignr}${color}${cpu cpu0}%
-		${color}${cpubar cpu0 6}
-		# Memery
-		${color}${font DejaVu Sans Mono:pixelsize=40}M${font DejaVu Sans Mono:pixelsize=20}EM\
-		${font}${voffset -20}${alignr}${memgraph 20,150}
-		${color}LOAD${alignr}${color}$mem / $memmax
-		${color}SWAP${alignr}${color}$swap / $swapmax
-		${color}USE${alignr}${color}$memperc%
-		${color}${membar 6}
-		${color}Highest_use${alignc -40}CPU%${alignr}MEM%
-		${top name 1}${alignc -30}${top cpu 1}${alignr}${top mem 1}
-		${top name 2}${alignc -30}${top cpu 2}${alignr}${top mem 2}
-		${top name 3}${alignc -30}${top cpu 3}${alignr}${top mem 3}
-		${color}${hr 2}
-		# Network
-		${color}${font DejaVu Sans Mono:pixelsize=40}N${font DejaVu Sans Mono:pixelsize=20}ET\
-		${font}${voffset -20}${alignr}${downspeedgraph ppp0 20,100 grey grey}
-		${color}Down${alignr}${color}${downspeedf ppp0} k/s
-		${color}Up${alignr}${color}${upspeedf ppp0} k/s
-		${color}${hr 2}
-		# Disk
-		${color}${font DejaVu Sans Mono:pixelsize=40}D${font DejaVu Sans Mono:pixelsize=20}ISK\
-		${font}${voffset -20}${alignr}${diskiograph sda 20,150}
-		${color}READ${alignr}${color}${diskio_read sda}
-		${color}WRITE${alignr}${color}${diskio_write sda}
-		${color}/ ${fs_used /} / ${fs_size /}${alignr}${color}${fs_used_perc /}%
-		${color}${fs_bar 6 /}
-		${color}/boot ${fs_used /boot} / ${fs_size /boot}${alignr}${color}${fs_used_perc /boot}%
-		${color}${fs_bar 6 /boot}
-		${color}/var ${fs_used /var} / ${fs_size /var}${alignr}${color}${fs_used_perc /var}%
-		${color}${fs_bar 6 /var}
-		${color}/usr ${fs_used /usr} / ${fs_size /usr}${alignr}${color}${fs_used_perc /usr}%
-		${color}${fs_bar 6 /usr}
-		${color}/home ${fs_used /home} / ${fs_size /home}${alignr}${color}${fs_used_perc /home}%
-		${color}${fs_bar 6 /home}
-	]]

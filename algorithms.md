@@ -532,7 +532,7 @@
         /** 
          * 图构造函数
          * @params vertices 图顶点
-         * @params edges    如果参数为Map类型为 图的边，链接表保存，为boolean时判断有向图
+         * @params edges    如果参数为Map类型为 图的边，邻接表保存，为boolean时判断有向图
          * @params directed 判断有向图 
          */        
         constructor(vertices = [], edges = new Map(), directed = false) {
