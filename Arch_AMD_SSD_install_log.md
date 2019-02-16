@@ -297,15 +297,11 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ code ~/.config/mongodb/mongodb.conf
 
 	添加如下：
-<<<<<<< HEAD
-	dbpath=/var/db/mongodb
-=======
-	dbpath=/data/db	#数据库路径
+	dbpath=/var/db/mongodb #数据库路径
 	logappend=true #错误日志采用追加模式，配置这个选项后mongodb的日志会追加到现有的日志文件，而不是从新创建一个新文件
 	journal=true #启用日志文件，默认启用
 	quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false
 	port=27017 #端口号 默认为27017
->>>>>>> c98f61d44819d038eefc932f244681546435beb5
 
 > *   nvm
 
