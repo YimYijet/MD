@@ -283,7 +283,7 @@ swap|swap|2G|swap|1050624s|5244927s|-
 	$ yay -S netease-cloud-music		// 网易云音乐
 	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
 	$ yay -S latte-dock			// 轻量级dock
-	$ yay -S cmake cmake-extras	// cmake
+	$ yay -S cmake extra-cmake-modules	// cmake
 
 > *   nvm
 
