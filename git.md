@@ -67,6 +67,7 @@
 	git branch -D [BRANCH]	//未合并的分支BRANCH无法用-d删除, -D可以强制删除
 	git checkout -b [BRANCH] origin/[BRANCH]	//在本地建立与远端向对应的分支BRANCH
 	git branch --track [BRANCH] origin/[BRANCH]	//建立本地分支与远端的关联
+	git push origin --delete [BRANCK]	// 删除远端分支
 
 ---
 ### 储藏
@@ -96,3 +97,32 @@
 ### _.gitignore_
 	git add -f [FILE_PATH]	//会强制添加
 	git check-ignore -v [FILE_PATH]	//查看那条规则对FILE_PATH约束
+
+### 本地忽略
+	git update-index --assume-unchanged [FILE_PATH/FILE_NAME]	// 忽略追踪
+	git update-index --no-assume-unchanged [FILE_PATH/FILE_NAME]	// 恢复追踪
+	git ls-files -v | grep '^h\ '	// 查看忽略文件
+	git ls-files -v | grep '^h\ ' | awk '{print $2}'	// 提取忽略路径
+	git ls-files -v | grep '^h' | awk '{print $2}' |xargs git update-index --no-assume-unchanged 	// 恢复追踪所有忽略文件
+
+### 场景
+#### 远程代码回滚
+	git reset head~2 // 回滚到想要的提交的前一个提交
+	git status	// 查看状态会看到之前修改的文件
+	git add .	// 添加想要修改文件
+	git commit -m ''	// 提交
+	git push oirgin [BRANCH] -f // 强制提交本次到远端
+
+#### 更新原项目代码到fork库
+	git remote -v // 查看本地仓库
+	git remote add [REMOTE_NAME] [URL]	// 将原项目地址添加到remote列表
+	git fetch [REMOTE_NAME] [BRANCH_NAME]	// 获取原项目代码到本地
+	git reset --hard FETCH_HEAD 	// 将指针存放到FETCH_HEAD
+	git push origin [BRANCH_NAME]	// 推送更新代码到fork库
+
+#### 创建多个Pull request
+	git push 	// 推送 并生成一个pull request
+	git checkout -b [BRANCH_NAME]	// 生成新的branch
+	git checkout [BRANCH_NAME]	// 切换到branch
+	git add . git commit -m ''	// 提交修改
+	git push origin [BRANCH_NAME]	// 将本地代码推送到远端 生成新的pull request 选择合并的分支

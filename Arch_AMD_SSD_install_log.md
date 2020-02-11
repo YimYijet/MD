@@ -5,19 +5,16 @@ MagicBook ![archlinux logo](./archlinux-logo-dark.png) 安装日志
 ### GPT分区
 path/type|name|size|fs|start|end|flags
 :-:|:-:|:-:|:-:|:-:|:-:|:-:
-/boot|boot|1G|fat32|2048s|2099199s|boot,esp
-swap|swap|2G|swap|2099200s|6293503s|-
-/|root|10G|btrfs|6293504s|27265023s|-
-/var|var|10G|btrfs|27265024s|48236543s|-
-/usr|usr|30G|btrfs|48236544s|111151103s|-
-/home|home|remain|btrfs|111151104s|100%|-
+/boot|boot|1G|fat32|2048s|1050623s|boot,esp
+swap|swap|2G|swap|1050624s|5244927s|-
+/|root|10G|btrfs|5244928s|100%|-
 
 ---
 ### 系统安装
 > *   SSD 4K对齐分区
 
 	# lsblk -l					// 显示硬盘及分区
-	
+
 	# parted					// 进入parted分区
 	#(parted) print -l				// 显示当前分区
 	#(parted) select /dev/sda
@@ -34,17 +31,14 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	# mkswap /dev/sda2		// 创建交换分区
 	# swapon /dev/sda2		// 激活交换分区
 	# mkfs.btrfs -f /dev/sdaX 	// -f 强制格式化
-	
+
 > *   挂载分区
 
 	# mount /dev/sda3 /mnt		// 挂载root分区到/mnt
 	# cd /mnt
-	# mkdir -v boot usr home var
+	# mkdir -v boot
 	# ls
 	# mount /dev/sda1 /mnt/boot
-	# mount /dev/sda4 /mnt/var
-	# mount /dev/sda5 /mnt/usr
-	# mount /dev/sda6 /mnt/home
 
 > *   安装前准备
 
@@ -54,7 +48,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   系统安装
 
-	# pacstrap -i /mnt base base-devel	// 安装基础系统以及常用开发工具
+	# pacstrap -i /mnt base base-devel linux linux-firmware	// 安装基础系统以及常用开发工具
 	# genfstab -U /mnt >> /mnt/etc/fstab 	// 生成fstab文件，定义分区及文件系统
 	# nano /mnt/etc/fstab			// 将分区atime参数设置为noatime，桌面用户优化，阻止读写数据时产生记录，将esp分区移到最上方
 
@@ -84,10 +78,10 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	# nano /etc/mkinitcpio.conf
 
 	按如下设置：
-	1.  把 MODULES=() 改为 MODULES=(ahci btrfs)    	// 开启AHCI模式，优化问题，可以不改
-	2.  在 HOOKS 结尾添加 usr shutdown
+	1.  把 MODULES=() 改为 MODULES=(amdgpu ahci btrfs)    	// 开启AHCI模式，优化问题，可以不改
+	2.  在 HOOKS 结尾添加 btrfs
 	3.  去掉 COMPRESSION="xz" 前的#    		// xz压缩效率更高
-	
+
 	# mkinitcpio -p linux				// 更改mkinitcpio配置后，需要手动重新生成镜像（但下一步安装btrfs-progs时会自动更新.img，故非必用）
 
 > *   安装btrfs用户空间工具
@@ -96,18 +90,19 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 > *   安装必要驱动&服务
 
+	# pacman -S nano		// nano文本编辑
 	# pacman -S xf86-input-synaptics		// 触摸板驱动
-	# pacman -S xf86-video-ati			// amd显卡驱动
+	# pacman -S xf86-video-amdgpu			// amd显卡驱动
 	# pacman -S mesa				// openGL驱动，提供DRI和3D加速
+	# pacman -S vulkan-radeon		// vulkan驱动
 	# pacman -S dialog wpa_supplicant		// 安装联网软件
 	# pacman -s networkmanager			// 安装图形网络管理器
 	# systemctl enable NetworkManager.service	// 开机启动网络管理
 	# pacman -S tlp tlp-rdw				// 安装tlp电源管理器
 	# systemctl enable tlp.service
-	# systemctl enable tlp-sleep.service
 
 > *   安装图形界面
-	
+
 	# pacman -S xorg		// 安装图形驱动
 	# pacman -S plasma		// 安装kde的plasma桌面
 	# pacman -S sddm		// 安装显示管理器，用于启动桌面
@@ -117,11 +112,13 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	# bootctl install		// /boot分区挂载在esp分区直接安装
 	# nano /boot/loader/loader.conf
-	
-	如下设置： 
+
+	如下设置：
 	default arch
+	console-mode max
+	auto-firmware 0
 	timeout 0
-	editor 0
+	editor no
 
 	# nano /boot/loader/entries/arch.conf
 
@@ -129,7 +126,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	title         Arch Linux
 	linux         /vmlinuz-linux
 	initrd        /initramfs-linux.img
-	options       root=/dev/sda3 rw
+	options       root=/dev/sda3 rw quiet splash idle=nomwait amdgpu.noretry=0 iommu=soft rcu_nocbs=0-7
 
 	# exit
 	# reboot
@@ -143,7 +140,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	# pacman -Qs sudo			// 如果安装了base-devel元件组，可以看到sudo
 	# pacman -S sudo 			// 没有sudo就安装一个
 	# nano /etc/sudoers
-	
+
 	如下设置：
 	root ALL=(ALL) ALL
 	$username ALL=(ALL) NOPASSWD: ALL   	// 给普通用户su权限，并且不需要密码验证
@@ -154,16 +151,16 @@ swap|swap|2G|swap|2099200s|6293503s|-
 > *   Ctrl + Alt + F1切换到图形界面
 > *   Alt + Space唤出搜索，输入konsole
 
-	$ sudo pacman -S code				// vscode
+	$ sudo pacman -S visual-studio-code-bin libdbusmenu-glib	// vscode
 	$ sudo code /etc/pacman.conf			// 修改pacman配置文件
-	
+
 	末尾添加两行：
 	[archlinuxcn]
 	Server = https://cdn.repo.archlinuxcn.org/$arch
-	
+
 	$ sudo pacman -Sy archlinuxcn-keyring		// 安装archlinuxcn-keyring包以导入GPG key
 	$ sudo pacman -S archlinuxcn-mirrorlist-git	// 安装archlinuxcn镜像列表
-	
+
 	$ sudo code /etc/pacman.d/mirrorlist		// 修改镜像源
 
 [镜像地址](https://www.archlinux.org/mirrorlist/)
@@ -171,7 +168,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 > *   安装中文字体&输入法
 
 	$ sudo pacman -S wqy-microhei				// 安装文泉驿微米黑字体
-	$ sudo pacman -S fcitx fcitx-im fcitx-configtool	// 安装小企鹅输入法
+	$ sudo pacman -S fcitx fcitx-im fcitx-lilydjwg-git kcm-fcitx	// 安装小企鹅输入法
 	$ code ~/.xprofile					// 配置.xprofile, 图形界面启动读取配置
 	$ code ~/.xinitrc					// 配置.xinitrc, 非图形界面启动读取配置
 
@@ -192,7 +189,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	tmpfs	/var/cache/pacman/pkg	tmpfs	defaults,noatime,mode=1777	0 0
 	tmpfs	/home/$username/.cache	tmpfs	defaults,noatime,mode=1777	0 0
 
-> *   SSD启用TRIM功能 
+> *   SSD启用TRIM功能
 
 	$ hdparm -I /dev/sda | grep TRIM
 	$ sudo code /etc/fstab
@@ -213,7 +210,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 	如下设置：
 	kernel.sysrq = 1
-	
+
 [死机解决](https://blog.csdn.net/openswc/article/details/9105071)
 
 > *   openssh
@@ -221,7 +218,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ yay -S openssh
 	$ sudo code /etc/ssh/sshd_config
 
-	添加如下： 
+	添加如下：
 	AllowUsers    $username
 
 	$ systemctl enable sshd.service
@@ -233,7 +230,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"	// 安装 oh-my-zsh
 	$ sudo pacman -S neofetch	// 装逼神器
 	$ code ~/.zshrc
-	
+
 	修改如下：
 	ZSH_THEME="bullet-train"
 
@@ -260,7 +257,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	)
 
 	alias hosts='sudo wget https://raw.githubusercontent.com/googlehosts/hosts/master/hosts-files/hosts -O /etc/hosts'
-	
+
 	$ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting		// 安装zsh-syntax-highlighting
 	$ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions			// 安装zsh-autosuggestions
 	$ git clone https://github.com/paulirish/git-open.git $ZSH_CUSTOM/plugins/git-open								// 安装git-open
@@ -286,22 +283,7 @@ swap|swap|2G|swap|2099200s|6293503s|-
 	$ yay -S netease-cloud-music		// 网易云音乐
 	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
 	$ yay -S latte-dock			// 轻量级dock
-	$ yay -S nginx-mainline			// nginx主分支，wiki推荐
-	$ yay -S mongodb			// mongodb
-
-> *   mongodb配置
-
-	$ sudo mkdir -p /var/db/mongodb
-	$ sudo chown `$username` /var/db/mongodb
-
-	$ code ~/.config/mongodb/mongodb.conf
-
-	添加如下：
-	dbpath=/var/db/mongodb #数据库路径
-	logappend=true #错误日志采用追加模式，配置这个选项后mongodb的日志会追加到现有的日志文件，而不是从新创建一个新文件
-	journal=true #启用日志文件，默认启用
-	quiet=true #这个选项可以过滤掉一些无用的日志信息，若需要调试使用请设置为false
-	port=27017 #端口号 默认为27017
+	$ yay -S cmake cmake-extras	// cmake
 
 > *   nvm
 
@@ -315,30 +297,12 @@ swap|swap|2G|swap|2099200s|6293503s|-
 
 [nvm](https://github.com/creationix/nvm)
 
-> *   gvm
-
-	$ bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
-
-> 1.  gvm下载源是[https://go.googlesource.com/go](https://go.googlesource.com/go)，国内无法访问，使用如下命令修改源：
-
-	$ gvm install go1.11.4 --source=https://github.com/golang/go
-
-
-> 2.  在[中科大镜像](http://mirrors.ustc.edu.cn/golang/)下载二进制安装包，放到~/.gvm/archive目录下，使用二进制安装
-
-	$ gvm install go1.11.4 -B
-
-
-	$ gvm use go1.11.4 --default 		// 默认是用，不加--default，每次打开命令行都要use
-	$ mkdir -p ~/Workspace/Golang		// 创建go项目工作空间
-	$ cd ~/Workspace/Golang
-	$ gvm pkgset create --local		// 将当前目录设为本地的pkgset
-	$ gvm pkgset use --local		// 将当前目录添加到GOPATH
-
 ---
 ### 美化
+部件：
+>	[Window AppMenu Applet](https://www.pling.com/p/1274975)</br>
+	[Window Buttons Applet](https://www.pling.com/p/1272871/)</br>
 
-菜单：UMenu</br>
 图标：[Papirus](https://store.kde.org/p/1166289/)</br>
 应用风格：Breezemite</br>
 桌面主题：Macbreeze Shadowless
