@@ -280,16 +280,16 @@ swap|swap|2G|swap|1050624s|5244927s|-
 	$ yay -S git				// 安装git
 	$ yay -S dolphin dolphin-plugins	// dolphin文件管理器
 	$ yay -S unrar zip unzip ark		// 压缩及解压缩工具
-	$ yay -S bomi	moonplayer			// 播放器
+	$ yay -S bomi moonplayer		// 播放器
 	$ yay -S okular 			// 文档阅读器
-	$ yay -S kget wget	ktorrent		// 下载器
+	$ yay -S kget wget ktorrent		// 下载器
 	$ yay -S gwenview			// 图片查看
 	$ yay -S netease-cloud-music		// 网易云音乐
 	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
-	$ yay -S fcitx-rime				// 中州韵
+	$ yay -S fcitx-rime			// 中州韵
 	$ yay -S latte-dock			// 轻量级dock
 	$ yay -S cmake extra-cmake-modules	// cmake
-	$ yay -S mcomix			// gtk 漫画阅读器
+	$ yay -S mcomix				// gtk 漫画阅读器
 
 > *   nvm
 
@@ -312,7 +312,7 @@ swap|swap|2G|swap|1050624s|5244927s|-
 
 图标：[Papirus](https://store.kde.org/p/1166289/)</br>
 应用风格：Breezemite</br>
-桌面主题：Macbreeze Shadowless
+桌面主题：Macbreeze Shadowless</br>
 [emoji](https://www.omgubuntu.co.uk/2016/08/enable-color-emoji-linux-google-chrome-noto)
 
 ### HOSTS
