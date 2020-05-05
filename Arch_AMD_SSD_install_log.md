@@ -264,6 +264,10 @@ swap|swap|2G|swap|1050624s|5244927s|-
 
 	$ source .zshrc	// 载入配置
 
+> *   konsole 花屏
+
+	行距设置为 1像素
+
 [bullet-train](https://github.com/caiogondim/bullet-train.zsh)</br>
 [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md)</br>
 [zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md)</br>
@@ -276,18 +280,20 @@ swap|swap|2G|swap|1050624s|5244927s|-
 	$ yay -S git				// 安装git
 	$ yay -S dolphin dolphin-plugins	// dolphin文件管理器
 	$ yay -S unrar zip unzip ark		// 压缩及解压缩工具
-	$ yay -S bomi				// bomi 播放器
+	$ yay -S bomi	moonplayer			// 播放器
 	$ yay -S okular 			// 文档阅读器
-	$ yay -S kget wget			// 下载器
+	$ yay -S kget wget	ktorrent		// 下载器
 	$ yay -S gwenview			// 图片查看
 	$ yay -S netease-cloud-music		// 网易云音乐
 	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
+	$ yay -S fcitx-rime				// 中州韵
 	$ yay -S latte-dock			// 轻量级dock
 	$ yay -S cmake extra-cmake-modules	// cmake
+	$ yay -S mcomix			// gtk 漫画阅读器
 
 > *   nvm
 
-	$ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+	$ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 	$ code ~/.zshrc
 
 	末尾添加：
@@ -302,7 +308,13 @@ swap|swap|2G|swap|1050624s|5244927s|-
 部件：
 >	[Window AppMenu Applet](https://www.pling.com/p/1274975)</br>
 	[Window Buttons Applet](https://www.pling.com/p/1272871/)</br>
+	Window Title
 
 图标：[Papirus](https://store.kde.org/p/1166289/)</br>
 应用风格：Breezemite</br>
 桌面主题：Macbreeze Shadowless
+[emoji](https://www.omgubuntu.co.uk/2016/08/enable-color-emoji-linux-google-chrome-noto)
+
+### HOSTS
+>	192.30.253.118 gist.github.com
+	 199.232.4.133 raw.githubusercontent.com
