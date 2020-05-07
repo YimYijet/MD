@@ -290,7 +290,7 @@ swap|swap|2G|swap|1050624s|5244927s|-
 	$ yay -S latte-dock			// 轻量级dock
 	$ yay -S cmake extra-cmake-modules	// cmake
 	$ yay -S mcomix				// gtk 漫画阅读器
-
+	$ yay -S ntfs-3g			// ntfs 磁盘格式支持
 > *   nvm
 
 	$ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
