@@ -168,13 +168,13 @@ swap|swap|2G|swap|1050624s|5244927s|-
 > *   安装中文字体&输入法
 
 	$ sudo pacman -S wqy-microhei				// 安装文泉驿微米黑字体
-	$ sudo pacman -S fcitx fcitx-im fcitx-lilydjwg-git kcm-fcitx	// 安装小企鹅输入法
+	$ sudo pacman -S fcitx5 fcitx5-qt fcitx5-gtk kcm-fcitx5 fcitx5-chiese-addons	// 安装小企鹅输入法
 	$ code ~/.xprofile					// 配置.xprofile, 图形界面启动读取配置
 	$ code ~/.xinitrc					// 配置.xinitrc, 非图形界面启动读取配置
 
 	如下设置：
-	export GTK_IM_MODULE=fcitx
-	export QT_IM_MODULE=fcitx
+	export GTK_IM_MODULE=fcitx5
+	export QT_IM_MODULE=fcitx5
 	export XMODIFIERS="@im=fcitx"
 
 > *   修改fstab文件
@@ -285,8 +285,6 @@ swap|swap|2G|swap|1050624s|5244927s|-
 	$ yay -S kget wget ktorrent		// 下载器
 	$ yay -S gwenview			// 图片查看
 	$ yay -S netease-cloud-music		// 网易云音乐
-	$ yay -S fcitx-sogoupinyin		// 搜狗拼音
-	$ yay -S fcitx-rime			// 中州韵
 	$ yay -S latte-dock			// 轻量级dock
 	$ yay -S cmake extra-cmake-modules	// cmake
 	$ yay -S mcomix				// gtk 漫画阅读器
